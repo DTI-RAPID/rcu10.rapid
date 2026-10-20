@@ -1,0 +1,147 @@
+---
+import { Image } from 'astro:assets';
+import { updates, regionNews } from '../data/rapid';
+
+const PAGE = 6;
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const FULL_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const parts = (iso: string) => {
+	const [y, m, d] = iso.split('-').map(Number);
+	return { day: d, month: MONTHS[m - 1], year: y, long: `${d} ${FULL_MONTHS[m - 1]} ${y}` };
+};
+
+---
+
+<section id="news" class="bg-mist py-24 sm:py-32" data-news>
+	<div class="shell">
+		<div class="flex flex-wrap items-end justify-between gap-8">
+			<div class="max-w-xl">
+				<h2 class="display text-[clamp(2.2rem,4.5vw,3.6rem)] text-teal">News and events</h2>
+				<p class="mt-5 text-ink/75">
+					The latest from the RAPID Growth teams of DTI Bukidnon and DTI Misamis Oriental.
+				</p>
+			</div>
+		</div>
+
+		<ul class="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3" data-list>
+			{
+				updates.map((u) => {
+					const d = parts(u.date);
+					return (
+						<li>
+							<a href={u.href} target="_blank" rel="noopener" class="card group block">
+								<div class="relative">
+									<Image
+										src={u.image}
+										alt=""
+										widths={[400, 640]}
+										sizes="(min-width: 1024px) 26rem, (min-width: 640px) 45vw, 92vw"
+										class="aspect-[3/2] w-full rounded-md object-cover"
+									/>
+									<time datetime={u.date} class="stamp">
+										<span class="stamp-day">{d.day}</span>
+										<span class="stamp-month">
+											{d.month} {d.year}
+										</span>
+										<span class="sr-only">{d.long}</span>
+									</time>
+								</div>
+								<div class="mt-10">
+									<h3 class="card-title text-lg leading-snug font-semibold text-teal">{u.title}</h3>
+									<p class="card-summary mt-2 text-[0.975rem] text-ink/70">{u.summary}</p>
+								</div>
+							</a>
+						</li>
+					);
+				})
+			}
+		</ul>
+
+		<div class="mt-16 flex flex-wrap items-center gap-x-8 gap-y-5">
+			<button type="button" class="btn border border-teal/30 text-teal hover:border-teal hover:bg-teal hover:text-mist" data-more hidden>
+				Show more
+			</button>
+			<a href={regionNews} target="_blank" rel="noopener" class="font-semibold text-teal underline decoration-leaf decoration-2 underline-offset-[6px] hover:decoration-teal">
+				All Region 10 news on dtirapid.ph
+			</a>
+			<p class="text-sm text-ink/60 sm:ml-auto" data-status aria-live="polite"></p>
+		</div>
+	</div>
+</section>
+
+<style>
+	/* Calendar-style date stamp overlapping the photo */
+	.stamp {
+		position: absolute;
+		left: 1rem;
+		bottom: -1.75rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		min-width: 4.25rem;
+		padding: 0.5rem 0.6rem 0.45rem;
+		border-radius: 6px;
+		background: var(--color-teal);
+		color: var(--color-mist);
+		box-shadow: 0 0 0 4px var(--color-mist);
+		line-height: 1;
+	}
+	.stamp-day {
+		font-family: var(--font-display);
+		font-stretch: 112%;
+		font-weight: 800;
+		font-size: 1.9rem;
+	}
+	.stamp-month {
+		margin-top: 0.3rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		white-space: nowrap;
+	}
+
+	.card-title,
+	.card-summary {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	.card-title {
+		-webkit-line-clamp: 3;
+	}
+	.card-summary {
+		-webkit-line-clamp: 2;
+	}
+	.card:hover .card-title,
+	.card:focus-visible .card-title {
+		text-decoration: underline;
+		text-decoration-color: var(--color-leaf);
+		text-decoration-thickness: 2px;
+		text-underline-offset: 4px;
+	}
+</style>
+
+<script define:vars={{ PAGE }}>
+	// Reveal items page by page. Without JavaScript every card stays visible.
+	const root = document.querySelector('[data-news]');
+	if (root) {
+		const items = [...root.querySelectorAll('[data-list] > li')];
+		const more = root.querySelector('[data-more]');
+		const status = root.querySelector('[data-status]');
+
+		const render = (expanded) => {
+			items.forEach((li, i) => (li.hidden = !expanded && i >= PAGE));
+			const shown = expanded ? items.length : Math.min(PAGE, items.length);
+			more.hidden = shown === items.length;
+			more.textContent = `Show ${items.length - shown} more`;
+			status.textContent = `Showing ${shown} of ${items.length}`;
+		};
+
+		more.addEventListener('click', () => {
+			render(true);
+			// move keyboard focus to the first newly revealed card
+			items[PAGE]?.querySelector('a')?.focus();
+		});
+
+		render(false);
+	}
+</script>

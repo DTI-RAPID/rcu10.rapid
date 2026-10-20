@@ -14,13 +14,13 @@ const items: GalleryItem[] = await Promise.all(
 <section id="stories" class="gallery relative overflow-hidden bg-canopy-deep py-24 text-mist sm:py-28">
 	<div class="shell flex flex-wrap items-end justify-between gap-6">
 		<div class="max-w-xl">
-			<h2 class="display text-[clamp(2.2rem,4.5vw,3.6rem)]">Stories from the field</h2>
+			<h2 class="display text-[clamp(2.2rem,4.5vw,3.6rem)]">Featured stories</h2>
 			<p class="mt-5 text-mist/70">
-				Recent news and stories from the project. Drag the wall, or use the arrow keys. Each frame opens the full article on dtirapid.ph.
+				Young farmers and agri-preneurs across Northern Mindanao lead this wall, alongside recent stories from the region.
 			</p>
 		</div>
-		<a href={link('/webrep_v2/news_and_updates')} target="_blank" rel="noopener" class="btn border border-mist/25 text-mist hover:border-mist hover:bg-mist/10">
-			All news and updates
+		<a href={link('/webrep_v2/stories')} target="_blank" rel="noopener" class="btn border border-mist/25 text-mist hover:border-mist hover:bg-mist/10">
+			All stories on dtirapid.ph
 		</a>
 	</div>
 
@@ -132,6 +132,10 @@ const items: GalleryItem[] = await Promise.all(
 	.tag-story {
 		background: var(--color-leaf);
 	}
+	.tag-youth {
+		background: var(--color-gold);
+		color: var(--color-canopy-deep);
+	}
 	.placard-title {
 		display: -webkit-box;
 		-webkit-line-clamp: 3;
@@ -208,6 +212,12 @@ const items: GalleryItem[] = await Promise.all(
 	}
 	.museum-index button[aria-current]::after {
 		background: var(--color-gold);
+	}
+	.museum-hint {
+		margin-top: 0.9rem;
+		text-align: center;
+		font-size: 0.875rem;
+		color: rgb(233 239 234 / 0.5);
 	}
 	.museum-live {
 		max-width: 36rem;

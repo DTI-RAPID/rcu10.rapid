@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 export interface GalleryItem {
 	id: number;
 	tag: string;
+	youth?: boolean;
 	date: string;
 	place: string;
 	title: string;
@@ -189,6 +190,7 @@ export default function MuseumCarousel({ items }: { items: GalleryItem[] }) {
 								</span>
 								<span className="placard">
 									<span className="placard-meta">
+										{item.youth && <span className="tag tag-youth">Youth</span>}
 										<span className={`tag tag-${item.tag.toLowerCase()}`}>{item.tag}</span>
 										<span>{item.date}</span>
 									</span>
@@ -230,6 +232,8 @@ export default function MuseumCarousel({ items }: { items: GalleryItem[] }) {
 			<p className="museum-live" aria-live="polite">
 				{items[active].summary}
 			</p>
+
+			<p className="museum-hint">Drag the wall or use the arrow keys. Each frame opens the full article on dtirapid.ph.</p>
 		</div>
 	);
 }
