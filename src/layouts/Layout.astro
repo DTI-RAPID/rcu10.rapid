@@ -38,5 +38,14 @@ const {
 	</head>
 	<body>
 		<slot />
+		<script>
+			// Keep older section links working after the anchors were renamed
+			const renamed: Record<string, string> = { stories: 'featured', what: 'what-we-do', where: 'where-we-work' };
+			const target = renamed[location.hash.slice(1)];
+			if (target) {
+				history.replaceState(null, '', `#${target}`);
+				document.getElementById(target)?.scrollIntoView();
+			}
+		</script>
 	</body>
 </html>
