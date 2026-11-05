@@ -7,8 +7,10 @@ youth: false
 date: 2026-07-21
 place: "Lantapan, Bukidnon"
 summary: "IFAD organized a Project Demonstration Visit to RAPID Growth Project sites in Bukidnon to showcase the gains from implementation."
-image: ./images/147.jpg
+image: images/147.jpg
 alt: "The IFAD delegation and project partners in a group photo at the Cinchona Forest Reserve, Lantapan, Bukidnon"
+image2: images/147-1.jpg
+alt2: "Members of the IFAD delegation seated with farmers, sharing local produce during the visit"
 caption: "The delegation poses for a photo opportunity after a productive discussion in the Cinchona Forest Reserve, Lantapan, Bukidnon."
 author: "Lemuel Pobadora"
 unit: "NPCO"
@@ -19,13 +21,9 @@ source: https://dtirapid.ph/webrep_v2/article/147
 
 The visit brought Department of Economy, Planning, and Development (DEPDev) Undersecretary Joseph Capuno, Department of Finance (DOF) Undersecretary Joven Balbosa, and Department of Trade and Industry (DTI) Assistant Secretary Kristian Ablan to the foothill municipalities of Lantapan and Pangantucan in Bukidnon Province.
 
-![Members of the IFAD delegation seated with farmers, sharing local produce during the visit](./images/147-1.jpg)
-
 Led by IFAD Country Director Umit Mansiz, the delegation visited the farm sites and facilities of Paglambu LandCare Kaatuan Cluster (PLKC) in Lantapan and Bayanihan Millennium Multipurpose Cooperative (BMMPC) in Pangantucan, and witnessed firsthand how the project’s Public-Private-Producer Partnership through its Hub-and-Spoke working models were implemented in the field.
 
 By adopting RAPID Growth Project interventions and forging partnerships with Linear Coffee and Nestlé Philippines, both cooperatives achieved higher production and increased incomes, highlighting the project's tangible contributions to inclusive rural development.
-
-![Delegates being shown processing equipment inside a farmer organization facility](./images/147-2.jpg)
 
 During the visit, the delegation also inspected newly rehabilitated farm-to-market infrastructure developed through the partnership between the DTI RAPID Growth Project and the Department of the Interior and Local Government (DILG) in the municipalities of Lantapan and Pangantucan. The improved infrastructure has significantly reduced farmers' travel time and transportation effort in bringing their produce to market, resulting in better market access and increased economic opportunities.
 

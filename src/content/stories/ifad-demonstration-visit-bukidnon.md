@@ -7,8 +7,10 @@ youth: false
 date: 2026-07-20
 place: "Bukidnon"
 summary: "IFAD and national oversight agencies joined a two-day demonstration visit to project sites."
-image: ./images/139.jpg
+image: images/139.jpg
 alt: "IFAD representatives during the demonstration visit in Bukidnon"
+image2: images/147-2.jpg
+alt2: "Members of the IFAD delegation being shown processing equipment at a farmer organization facility during the visit"
 author: "Christian Derrick A. Casite"
 unit: "RCU X"
 source: https://dtirapid.ph/webrep_v2/article/139

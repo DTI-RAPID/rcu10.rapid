@@ -7,7 +7,7 @@ youth: true
 date: 2026-08-18
 place: "Bukidnon"
 summary: "A step toward stronger youth participation in agriculture and entrepreneurship across Bukidnon youth hubs."
-image: ./images/145.jpg
+image: images/145.jpg
 alt: "Youth champions gathered around a laptop during the cascading session in Bukidnon"
 author: "Christian Derrick A. Casite"
 unit: "RCU X"

@@ -7,8 +7,10 @@ youth: false
 date: 2026-07-27
 place: "Bukidnon"
 summary: "Post-planting validation across coffee and cacao expansion areas in the province."
-image: ./images/140.jpg
+image: images/140.jpg
 alt: "Young coffee plants on a hillside farm in Bukidnon"
+image2: images/140-2.jpg
+alt2: "A PHIMFACO farmer beside his cacao planting area during post-planting validation in Malaybalay City, Bukidnon"
 author: "Christian Derrick A. Casite"
 unit: "RCU X"
 source: https://dtirapid.ph/webrep_v2/article/140

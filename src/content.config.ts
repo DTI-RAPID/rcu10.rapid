@@ -8,7 +8,7 @@ const stories = defineCollection({
 	loader: glob({ pattern: '*.md', base: './src/content/stories' }),
 	schema: ({ image }) =>
 		z.object({
-			order: z.number(), // position on the wall, 1 = first
+			order: z.number().optional(), // legacy; the wall now orders itself (youth first, then newest)
 			articleId: z.number().optional(), // the article number on dtirapid.ph, for copied stories
 			title: z.string(),
 			tag: z.enum(['News', 'Story']),
@@ -18,6 +18,8 @@ const stories = defineCollection({
 			summary: z.string(),
 			image: image(),
 			alt: z.string(),
+			image2: image().optional(), // second photo, shown on the left inside the story
+			alt2: z.string().optional(),
 			caption: z.string().optional(),
 			author: z.string(),
 			unit: z.string(),

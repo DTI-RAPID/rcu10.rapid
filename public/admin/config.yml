@@ -23,7 +23,7 @@ collections:
   - name: stories
     label: Featured stories
     label_singular: Featured story
-    description: The museum wall on the home page. Each story also gets its own page at /stories/<file name>/. Lower "order" numbers appear first on the wall.
+    description: The museum wall on the home page. Youth stories show first, then the newest. Each story also gets its own page at /stories/<file name>/.
     folder: src/content/stories
     extension: md
     format: frontmatter
@@ -31,24 +31,27 @@ collections:
     delete: true
     slug: '{{slug}}'
     identifier_field: title
-    summary: '{{order}}. {{title}}'
-    sortable_fields: [order, date, title]
+    summary: '{{title}}'
+    sortable_fields: [date, title]
     preview_path: /stories/{{slug}}/
     media_folder: images
-    public_folder: ./images
+    public_folder: images
     fields:
-      - { name: order, label: Position on the wall, widget: number, value_type: int, min: 1, hint: '1 = first frame on the wall.' }
       - { name: title, label: Title, widget: string }
       - { name: tag, label: Type, widget: select, options: [News, Story], default: News }
-      - { name: youth, label: Youth story, widget: boolean, default: false, hint: 'Shows the gold Youth label.' }
+      - { name: youth, label: Youth story, widget: boolean, default: false, hint: 'Shows the gold Youth label and puts the story first on the wall.' }
       - { name: date, label: Date published, widget: datetime, date_format: 'YYYY-MM-DD', format: 'YYYY-MM-DD', time_format: false }
       - { name: place, label: Place, widget: string, hint: 'e.g. Lantapan, Bukidnon' }
       - { name: summary, label: Short summary, widget: text, hint: 'One sentence shown under the wall and in link previews.' }
-      - { name: image, label: Main photo, widget: image, hint: 'Landscape photo, about 1600px wide.' }
-      - { name: alt, label: Photo description, widget: string, hint: 'Describe what the photo shows, for screen readers.' }
-      - { name: caption, label: Photo caption, widget: string, required: false }
+      - { name: image, label: Main photo, widget: image, hint: 'Landscape photo, about 1600px wide. Shown at the top of the story.' }
+      - { name: alt, label: Main photo description, widget: string, hint: 'Describe what the photo shows, for screen readers.' }
+      - { name: image2, label: Second photo, widget: image, required: false, hint: 'Optional. Shown on the left inside the story text.' }
+      - { name: alt2, label: Second photo description, widget: string, required: false }
       - { name: author, label: Author, widget: string }
       - { name: unit, label: Office, widget: string, hint: 'e.g. RCU X' }
-      - { name: articleId, label: dtirapid.ph article number, widget: number, value_type: int, required: false, hint: 'Only for stories copied from dtirapid.ph.' }
-      - { name: source, label: Original article link, widget: string, required: false, hint: 'Shows the "First published on dtirapid.ph" credit when filled in.' }
-      - { name: body, label: Story text, widget: markdown }
+      - { name: body, label: Story text, widget: markdown, hint: 'Write the story here. Add photos with the Main photo and Second photo fields above, not inside the text.' }
+      # Set automatically / kept from the original dtirapid.ph articles; not shown to editors
+      - { name: articleId, widget: hidden, required: false }
+      - { name: source, widget: hidden, required: false }
+      - { name: order, widget: hidden, required: false }
+      - { name: caption, widget: hidden, required: false }

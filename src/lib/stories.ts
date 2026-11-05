@@ -2,10 +2,12 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Story = CollectionEntry<'stories'>;
 
-/** Featured stories in wall order. */
+/** Featured stories in wall order: youth stories first, then newest first. */
 export async function getStories(): Promise<Story[]> {
 	const all = await getCollection('stories');
-	return all.sort((a, b) => a.data.order - b.data.order);
+	return all.sort(
+		(a, b) => Number(b.data.youth) - Number(a.data.youth) || b.data.date.getTime() - a.data.date.getTime(),
+	);
 }
 
 export const storyHref = (story: Story) => `/stories/${story.id}/`;

@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+
+
+// Decorative contour rings, the same map language as the hero and the Region 10 map
+const rings = Array.from({ length: 9 }, (_, k) => {
+	const r0 = 40 + k * 34;
+	const pts = Array.from({ length: 64 }, (_, i) => {
+		const t = (i / 64) * Math.PI * 2;
+		const r = r0 * (1 + 0.12 * Math.sin(3 * t + k * 0.7) + 0.06 * Math.sin(5 * t - 1.3));
+		return `${(300 + Math.cos(t) * r * 1.15).toFixed(1)},${(300 + Math.sin(t) * r).toFixed(1)}`;
+	});
+	return { d: `M${pts.join('L')}Z`, index: (k + 1) % 5 === 0 };
+});
+---
+
+<Layout title="Page not found | RAPID Growth Region 10" description="This page could not be found on the RAPID Growth Project Region 10 site.">
+	<Nav />
+	<main>
+		<section class="lost relative overflow-hidden text-mist">
+			<svg class="contours" viewBox="0 0 600 600" aria-hidden="true">
+				{rings.map((r) => <path d={r.d} fill="none" stroke={r.index ? '#d8a93b' : '#5f9c97'} stroke-width={r.index ? 1.6 : 1} opacity={r.index ? 0.7 : 0.4} />)}
+				<circle cx="300" cy="300" r="7" fill="#d8a93b" />
+				<circle cx="300" cy="300" r="16" fill="none" stroke="#d8a93b" stroke-opacity="0.35" stroke-width="6" />
+			</svg>
+
+			<div class="shell relative pb-24 pt-36 sm:pb-32 sm:pt-44">
+				<p class="text-sm font-semibold text-gold">Error 404</p>
+				<h1 class="display mt-4 max-w-[16ch] text-[clamp(2.2rem,5vw,4rem)]">This page isn’t on our map</h1>
+				<p class="mt-6 max-w-[48ch] text-lg text-mist/75">
+					The link may be old, or the story may have moved or been removed. Try the featured stories, or start again from the home page.
+				</p>
+				<div class="mt-10 flex flex-wrap gap-3">
+					<a href="/#featured" class="btn bg-gold text-canopy-deep hover:bg-mist">See featured stories</a>
+					<a href="/" class="btn border border-mist/30 text-mist hover:border-mist hover:bg-mist/10">Go to the home page</a>
+				</div>
+			</div>
+		</section>
+
+	</main>
+</Layout>
+
+<style>
+	.lost {
+		background:
+			radial-gradient(60% 70% at 0% 0%, #0b3a3f 0%, transparent 70%),
+			var(--color-canopy);
+		min-height: 100svh;
+		display: flex;
+		align-items: center;
+	}
+	.contours {
+		position: absolute;
+		right: -8rem;
+		top: 50%;
+		width: min(46rem, 90vw);
+		transform: translateY(-50%);
+		pointer-events: none;
+	}
+	@media (max-width: 767px) {
+		.contours {
+			right: -12rem;
+			opacity: 0.45;
+		}
+	}
+</style>

@@ -6,7 +6,7 @@ youth: true
 date: 2026-11-05
 place: Lantapan
 summary: lorem
-image: ./images/Organized Server Rack with Neat Cabling.png
+image: images/Organized Server Rack with Neat Cabling.png
 alt: test
 caption: test
 author: fhel

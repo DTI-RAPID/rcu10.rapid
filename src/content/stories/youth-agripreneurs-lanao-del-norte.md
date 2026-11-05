@@ -7,7 +7,7 @@ youth: true
 date: 2026-07-09
 place: "Lanao del Norte"
 summary: "31 young people trained at JIKA Farm through a 15-module curriculum to become self-reliant agri-preneurs."
-image: ./images/136.jpg
+image: images/136.jpg
 alt: "Youth trainees holding their certificates at the agri-preneur training in Lanao del Norte"
 caption: "RAPIDGrowthProject Lanao del Norte"
 author: "John Lorenz L. Geonzon"

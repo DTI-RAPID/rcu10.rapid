@@ -7,8 +7,10 @@ youth: false
 date: 2026-08-18
 place: "Kadingilan, Bukidnon"
 summary: "Baroy Small Coconut Farmers Agriculture Cooperative turned discarded coconut shells into ₱1.7 million in charcoal sales."
-image: ./images/146.jpg
+image: images/146.jpg
 alt: "A truck loaded with sacks of coconut shell charcoal inside a warehouse"
+image2: images/146-2.jpg
+alt2: "Bukidnon small coconut farmers and DTI staff at the Donau Carbon plant, the buyer of their coconut shell charcoal"
 author: "Jason M. Tutor"
 unit: "RCU X"
 source: https://dtirapid.ph/webrep_v2/article/146
