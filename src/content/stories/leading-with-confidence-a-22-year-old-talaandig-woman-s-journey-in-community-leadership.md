@@ -13,9 +13,7 @@ unit: RCU 10
 
 When Genna Camanian became president of the Paglambu Kaatuan Landcare Cluster (PLKC) in 2022, she was just 22 years old. As a young woman from the Talaandig Indigenous community in Barangay Kaatuan, Lantapan, Bukidnon, she was entrusted with leading an association whose members had far more years of experience than she did.
 
-Not everyone was convinced th
-
-at someone her age could handle the responsibility.
+Not everyone was convinced that someone her age could handle the responsibility.
 
 “When I became president, I could not say that everyone was happy because they looked at 
 
