@@ -44,9 +44,7 @@ collections:
       - { name: place, label: Place, widget: string, hint: 'e.g. Lantapan, Bukidnon' }
       - { name: summary, label: Short summary, widget: text, hint: 'One sentence shown under the wall and in link previews.' }
       - { name: image, label: Main photo, widget: image, hint: 'Landscape photo, about 1600px wide. Shown at the top of the story.' }
-      - { name: alt, label: Main photo description, widget: string, hint: 'Describe what the photo shows, for screen readers.' }
       - { name: image2, label: Second photo, widget: image, required: false, hint: 'Optional. Shown on the left inside the story text.' }
-      - { name: alt2, label: Second photo description, widget: string, required: false }
       - { name: author, label: Author, widget: string }
       - { name: unit, label: Office, widget: string, hint: 'e.g. RCU X' }
       - { name: body, label: Story text, widget: markdown, hint: 'Write the story here. Add photos with the Main photo and Second photo fields above, not inside the text.' }
@@ -55,3 +53,5 @@ collections:
       - { name: source, widget: hidden, required: false }
       - { name: order, widget: hidden, required: false }
       - { name: caption, widget: hidden, required: false }
+      - { name: alt, widget: hidden, required: false }
+      - { name: alt2, widget: hidden, required: false }

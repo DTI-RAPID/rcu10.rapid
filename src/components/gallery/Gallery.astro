@@ -9,7 +9,7 @@ const items: GalleryItem[] = await Promise.all(
 	stories.map(async (story) => {
 		const { image, date, tag, youth, place, title, summary, alt } = story.data;
 		const img = await getImage({ src: image, width: 840, format: 'webp' });
-		return { id: story.id, tag, youth, date: formatDate(date), place, title, summary, alt, href: storyHref(story), src: img.src };
+		return { id: story.id, tag, youth, date: formatDate(date), place, title, summary, alt: alt || title, href: storyHref(story), src: img.src };
 	}),
 );
 ---

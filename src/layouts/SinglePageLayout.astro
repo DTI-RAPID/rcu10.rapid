@@ -62,7 +62,7 @@ const published = formatDate(date);
 					<div class="photo-notch">
 						<Image
 							src={image}
-							alt={alt}
+							alt={alt || title}
 							widths={[480, 720, 960, 1200]}
 							sizes="(min-width: 1024px) 33rem, 92vw"
 							loading="eager"
@@ -95,7 +95,7 @@ const published = formatDate(date);
 			<div class="story-body" data-story-body>
 				{image2 && (
 					<figure class="photo-2" data-photo-2>
-						<Image src={image2} alt={alt2 ?? ''} widths={[480, 720, 960]} sizes="(min-width: 1024px) 26rem, 92vw" class="block aspect-[4/3] h-auto w-full object-cover" />
+						<Image src={image2} alt={alt2 || `Photo from the story: ${title}`} widths={[480, 720, 960]} sizes="(min-width: 1024px) 26rem, 92vw" class="block aspect-[4/3] h-auto w-full object-cover" />
 					</figure>
 				)}
 				<Content />

@@ -17,7 +17,7 @@ const stories = defineCollection({
 			place: z.string(),
 			summary: z.string(),
 			image: image(),
-			alt: z.string(),
+			alt: z.string().optional(), // photo description for screen readers; the title is used when empty
 			image2: image().optional(), // second photo, shown on the left inside the story
 			alt2: z.string().optional(),
 			caption: z.string().optional(),
