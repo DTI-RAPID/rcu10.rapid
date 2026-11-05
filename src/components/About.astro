@@ -1,16 +1,24 @@
 ---
-import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
 import { about } from '../data/rapid';
-import { getStories } from '../lib/stories';
+import { getStories, storyHref } from '../lib/stories';
+import StackedGallery, { type DeckItem } from './StackedGallery';
 
-// Three field photos from the featured stories, layered in depth
-const stories = await getStories();
-// Prefer these three photos; fall back to the first stories if any were removed in the admin
-const preferred = [140, 142, 146].map((id) => stories.find((s) => s.data.articleId === id)).filter(Boolean);
-const layers = [...new Set([...preferred, ...stories])].slice(0, 3).map((s) => s!.data);
+// Stacked deck: the 6 newest featured stories by date, each with its main photo, linked to its story.
+// It updates on its own when stories are added or edited in the admin.
+const newest = (await getStories())
+	.slice()
+	.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+	.slice(0, 6);
+const items: DeckItem[] = await Promise.all(
+	newest.map(async (story) => {
+		const img = await getImage({ src: story.data.image, width: 800, format: 'webp' });
+		return { src: img.src, alt: story.data.alt || story.data.title, title: story.data.title, href: storyHref(story) };
+	}),
+);
 ---
 
-<section id="about" class="relative bg-mist py-24 sm:py-36">
+<section id="about" class="about relative bg-mist py-24 sm:py-36">
 	<div class="shell grid items-center gap-16 lg:grid-cols-[1.05fr_1fr] lg:gap-24">
 		<div>
 			<p class="text-xl text-teal">Introducing the</p>
@@ -28,71 +36,126 @@ const layers = [...new Set([...preferred, ...stories])].slice(0, 3).map((s) => s
 			</a>
 		</div>
 
-		<div class="depth" data-depth aria-hidden="true">
-			{
-				layers.map((n, i) => (
-					<div class={`depth-layer depth-${i}`}>
-						<Image src={n.image} alt="" width={800} widths={[480, 800]} sizes="(min-width: 1024px) 30vw, 70vw" />
-					</div>
-				))
-			}
-		</div>
+		<StackedGallery client:visible items={items} />
 	</div>
 </section>
 
-<style>
-	.depth {
+<style is:global>
+	/* the fanned-out cards must never widen the page on phones */
+	.about {
+		overflow-x: clip;
+	}
+
+	/* Stacked photo deck (StackedGallery.tsx) */
+	.deck {
+		width: 100%;
+		max-width: 26rem;
+		margin-inline: auto;
+		outline: none;
+	}
+	.deck-stage {
 		position: relative;
-		aspect-ratio: 1 / 1.05;
-		perspective: 1100px;
-		--rx: 0deg;
-		--ry: 0deg;
+		aspect-ratio: 3 / 4;
+		margin-right: 3.5rem; /* room for the cards fanned out behind */
+		touch-action: pan-y;
+		user-select: none;
+		cursor: grab;
 	}
-	.depth-layer {
+	.deck-stage:active {
+		cursor: grabbing;
+	}
+	.deck-card {
 		position: absolute;
+		inset: 0;
 		overflow: hidden;
-		border-radius: 6px;
-		box-shadow: 0 30px 60px -25px rgb(3 26 29 / 0.55);
-		transform-style: preserve-3d;
-		transition: transform 0.9s var(--ease-out-quint);
+		border-radius: 1.25rem;
+		background: var(--color-mist-deep);
+		box-shadow: 0 30px 50px -28px rgb(3 26 29 / 0.6);
+		transform-origin: 50% 90%;
+		/* springy settle with a small overshoot */
+		/* smooth settle with only a hint of bounce */
+		transition:
+			transform 0.65s cubic-bezier(0.22, 1.12, 0.36, 1),
+			filter 0.5s ease,
+			opacity 0.45s ease;
+		will-change: transform;
 	}
-	.depth-layer img {
+	.deck-card img {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		pointer-events: none;
 	}
-	.depth-0 img {
-		object-position: 50% 90%;
+	.deck-caption {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-top: 2.75rem;
+		margin-right: 3.5rem;
 	}
-	.depth-0 {
-		inset: 0 22% 30% 0;
-		transform: rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0);
+	.deck-title {
+		flex: 1 1 12rem;
+		/* always reserve two lines so the page never shifts when the title changes */
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		min-height: calc(2 * 1.5em);
+		line-height: 1.5;
+		font-weight: 600;
+		color: var(--color-teal);
+		animation: deck-in 0.5s var(--ease-out-quint);
 	}
-	.depth-1 {
-		inset: 38% 0 6% 34%;
-		transform: rotateX(var(--rx)) rotateY(var(--ry)) translateZ(70px);
+	.deck-nav {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		flex: none;
 	}
-	.depth-2 {
-		inset: 62% 46% 0 8%;
-		border: 6px solid var(--color-mist);
-		transform: rotateX(var(--rx)) rotateY(var(--ry)) translateZ(130px);
+	.deck-nav button {
+		display: grid;
+		place-items: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 50%;
+		border: 1px solid rgb(0 68 80 / 0.25);
+		color: var(--color-teal);
+		transition:
+			background-color 0.2s,
+			color 0.2s;
+	}
+	.deck-nav button:hover {
+		background: var(--color-teal);
+		color: var(--color-mist);
+	}
+	.deck-count {
+		min-width: 4.2rem;
+		text-align: center;
+		font-variant-numeric: tabular-nums;
+		font-size: 0.95rem;
+		color: rgb(14 35 38 / 0.55);
+	}
+	.deck-count-now {
+		display: inline-block;
+		font-weight: 700;
+		color: var(--color-teal);
+		animation: deck-in 0.45s var(--ease-out-quint);
+	}
+	@keyframes deck-in {
+		from {
+			opacity: 0;
+			transform: translateY(0.5rem);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.deck-card {
+			transition: none;
+		}
+		.deck-title,
+		.deck-count-now {
+			animation: none;
+		}
 	}
 </style>
-
-<script>
-	const el = document.querySelector<HTMLElement>('[data-depth]');
-	const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-	if (el && !still) {
-		el.parentElement?.addEventListener('pointermove', (e) => {
-			const r = el.getBoundingClientRect();
-			const x = (e.clientX - (r.left + r.width / 2)) / r.width;
-			const y = (e.clientY - (r.top + r.height / 2)) / r.height;
-			el.style.setProperty('--ry', `${x * 10}deg`);
-			el.style.setProperty('--rx', `${-y * 8}deg`);
-		});
-		el.parentElement?.addEventListener('pointerleave', () => {
-			el.style.setProperty('--ry', '0deg');
-			el.style.setProperty('--rx', '0deg');
-		});
-	}
-</script>
