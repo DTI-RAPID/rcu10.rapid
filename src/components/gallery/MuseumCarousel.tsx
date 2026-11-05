@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface GalleryItem {
-	id: number;
+	id: string;
 	tag: string;
 	youth?: boolean;
 	date: string;
@@ -176,11 +176,9 @@ export default function MuseumCarousel({ items }: { items: GalleryItem[] }) {
 						>
 							<a
 								href={item.href}
-								target="_blank"
-								rel="noopener"
 								draggable={false}
 								onFocus={() => goTo(i)}
-								aria-label={`${item.title} (opens dtirapid.ph in a new tab)`}
+								aria-label={`Read the story: ${item.title}`}
 							>
 								<span className="spot" aria-hidden="true" />
 								<span className="frame">
@@ -233,7 +231,7 @@ export default function MuseumCarousel({ items }: { items: GalleryItem[] }) {
 				{items[active].summary}
 			</p>
 
-			<p className="museum-hint">Drag the wall or use the arrow keys. Each frame opens the full article on dtirapid.ph.</p>
+			<p className="museum-hint">Drag the wall or use the arrow keys. Select a frame to read the full story.</p>
 		</div>
 	);
 }

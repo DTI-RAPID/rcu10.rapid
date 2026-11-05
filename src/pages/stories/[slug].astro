@@ -1,0 +1,19 @@
+---
+import SinglePageLayout from "../../layouts/SinglePageLayout.astro";
+import { getStories } from "../../lib/stories";
+
+export async function getStaticPaths() {
+  const stories = await getStories();
+  return stories.map((story) => ({
+    params: { slug: story.id },
+    props: {
+      story,
+      others: stories.filter((s) => s.id !== story.id),
+    },
+  }));
+}
+
+const { story, others } = Astro.props;
+---
+
+<SinglePageLayout story={story} others={others} />

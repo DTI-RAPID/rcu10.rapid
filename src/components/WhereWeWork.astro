@@ -1,5 +1,12 @@
 ---
-import { places, commodities, link } from '../data/rapid';
+import { places, commodities } from '../data/rapid';
+import { getStories, storyHref } from '../lib/stories';
+
+// Each pin opens the featured story told about that place
+const stories = await getStories();
+const storyFor = (articleId: number) => storyHref(stories.find((s) => s.data.articleId === articleId)!);
+// Only show places whose story still exists (a story can be removed from the admin page)
+const pinned = places.filter((p) => stories.some((s) => s.data.articleId === p.article));
 
 // Simple equirectangular projection over Northern Mindanao
 const W = 1000;
@@ -42,9 +49,9 @@ const provinces = [
 			</p>
 			<ul class="mt-10 space-y-6">
 				{
-					places.map((p) => (
+					pinned.map((p) => (
 						<li>
-							<a href={link(`/webrep_v2/article/${p.article}`)} target="_blank" rel="noopener" class="group block" data-place={p.name}>
+							<a href={storyFor(p.article)} class="group block" data-place={p.name}>
 								<span class="block font-semibold text-teal group-hover:underline group-hover:underline-offset-4">
 									{p.name}, {p.province}
 								</span>
@@ -86,14 +93,12 @@ const provinces = [
 					}
 				</svg>
 				{
-					places.map((p) => (
+					pinned.map((p) => (
 						<a
-							href={link(`/webrep_v2/article/${p.article}`)}
-							target="_blank"
-							rel="noopener"
+							href={storyFor(p.article)}
 							class="pin"
 							style={`left:${(px(p.lon) / W) * 100}%;top:${(py(p.lat) / H) * 100}%`}
-							aria-label={`${p.name}, ${p.province}: ${p.focus} (opens dtirapid.ph)`}
+							aria-label={`${p.name}, ${p.province}: ${p.focus}`}
 							data-pin={p.name}
 						>
 							<span class="pin-up">

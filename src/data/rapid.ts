@@ -1,14 +1,6 @@
 // All content is taken from dtirapid.ph (landing page and article pages).
 // Figures are project-wide across all 7 regions, as published on the source site.
 
-import img147 from '../assets/news/147.jpg';
-import img146 from '../assets/news/146.jpg';
-import img145 from '../assets/news/145.jpg';
-import img142 from '../assets/news/142.jpg';
-import img140 from '../assets/news/140.jpg';
-import img139 from '../assets/news/139.jpg';
-import img136 from '../assets/news/136.jpg';
-
 // Photos for the News and events cards (Region 10 / RCU X items)
 import img158 from '../assets/news/158.jpg';
 import img153 from '../assets/news/153.jpg';
@@ -103,92 +95,7 @@ export const places = [
 
 export const commodities = ['Coffee', 'Cacao', 'Coconut'];
 
-// The museum wall. Youth stories lead and are highlighted.
-export const news: {
-	id: number;
-	tag: string;
-	youth?: boolean;
-	date: string;
-	place: string;
-	title: string;
-	summary: string;
-	image: ImageMetadata;
-	alt: string;
-	href: string;
-}[] = [
-	{
-		id: 145,
-		tag: 'News',
-		youth: true,
-		date: '18 August 2026',
-		place: 'Bukidnon',
-		title: 'DTI-RAPID Growth Project Launches Youth Champions’ Cascading Sessions for Bukidnon Youth Hubs',
-		summary: 'A step toward stronger youth participation in agriculture and entrepreneurship across Bukidnon youth hubs.',
-		image: img145,
-		alt: 'Participants at the Youth Champions’ cascading session in Bukidnon',
-	},
-	{
-		id: 136,
-		tag: 'Story',
-		youth: true,
-		date: '9 July 2026',
-		place: 'Lanao del Norte',
-		title: 'Empowering the Next Generation of Youth Agri-Preneurs of the RAPID Growth Project in Lanao del Norte',
-		summary: '31 young people trained at JIKA Farm through a 15-module curriculum to become self-reliant agri-preneurs.',
-		image: img136,
-		alt: 'Youth trainees holding their certificates at the agri-preneur training in Lanao del Norte',
-	},
-	{
-		id: 147,
-		tag: 'News',
-		date: '21 July 2026',
-		place: 'Lantapan, Bukidnon',
-		title: 'IFAD Project Demonstration Showcases RAPID Growth Project’s Proven Model for Scaling Sustainable Rural Development',
-		summary: 'IFAD organized a Project Demonstration Visit to RAPID Growth Project sites in Bukidnon to showcase the gains from implementation.',
-		image: img147,
-		alt: 'The IFAD delegation and project partners in a group photo at the Cinchona Forest Reserve, Lantapan, Bukidnon',
-	},
-	{
-		id: 146,
-		tag: 'Story',
-		date: '18 August 2026',
-		place: 'Kadingilan, Bukidnon',
-		title: 'From Coconut Waste to a Million-Peso Opportunity',
-		summary: 'Baroy Small Coconut Farmers Agriculture Cooperative turned discarded coconut shells into ₱1.7 million in charcoal sales.',
-		image: img146,
-		alt: 'A truck loaded with sacks of coconut shell charcoal inside a warehouse',
-	},
-	{
-		id: 142,
-		tag: 'News',
-		date: '16 January 2026',
-		place: 'Naawan, Misamis Oriental',
-		title: 'DTI–Misamis Oriental Joins Ceremonial Cacao Tree Planting and Stakeholders’ Meeting in Naawan',
-		summary: 'A multi-sectoral effort to expand cacao production and strengthen the local cacao industry.',
-		image: img142,
-		alt: 'Ceremonial cacao tree planting in Barangay Mapulog, Naawan',
-	},
-	{
-		id: 140,
-		tag: 'News',
-		date: '27 July 2026',
-		place: 'Bukidnon',
-		title: 'RAPID Growth Project Strengthens Monitoring of Coffee and Cacao Expansion Areas in Bukidnon',
-		summary: 'Post-planting validation across coffee and cacao expansion areas in the province.',
-		image: img140,
-		alt: 'Young coffee plants on a hillside farm in Bukidnon',
-	},
-	{
-		id: 139,
-		tag: 'News',
-		date: '20 July 2026',
-		place: 'Bukidnon',
-		title: 'IFAD Demonstration Visit Highlights RAPID Growth Project Gains in Bukidnon',
-		summary: 'IFAD and national oversight agencies joined a two-day demonstration visit to project sites.',
-		image: img139,
-		alt: 'IFAD representatives during the demonstration visit in Bukidnon',
-	},
-].map((n) => ({ ...n, href: link(`/webrep_v2/article/${n.id}`) }));
+// The featured stories (museum wall) live in src/content/stories/ as Markdown files.
 
 // News and events from Region 10 (RCU X on dtirapid.ph), newest first.
 // Items already on the museum wall are left out so nothing repeats.

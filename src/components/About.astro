@@ -1,10 +1,13 @@
 ---
 import { Image } from 'astro:assets';
-import { about, news } from '../data/rapid';
+import { about } from '../data/rapid';
+import { getStories } from '../lib/stories';
 
-// Three field photos, layered in depth
-const byId = (id: number) => news.find((n) => n.id === id)!;
-const layers = [byId(140), byId(142), byId(146)];
+// Three field photos from the featured stories, layered in depth
+const stories = await getStories();
+// Prefer these three photos; fall back to the first stories if any were removed in the admin
+const preferred = [140, 142, 146].map((id) => stories.find((s) => s.data.articleId === id)).filter(Boolean);
+const layers = [...new Set([...preferred, ...stories])].slice(0, 3).map((s) => s!.data);
 ---
 
 <section id="about" class="relative bg-mist py-24 sm:py-36">

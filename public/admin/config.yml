@@ -1,0 +1,54 @@
+# Admin page settings (Sveltia CMS). Open /admin/ on the live site and sign in with a GitHub token.
+# Saving a story commits the Markdown file to GitHub; Vercel then rebuilds the site automatically.
+
+backend:
+  name: github
+  repo: fhelcraft/test.rapid-r10
+  branch: main
+  commit_messages:
+    create: 'Add featured story: {{slug}}'
+    update: 'Update featured story: {{slug}}'
+    delete: 'Delete featured story: {{slug}}'
+    uploadMedia: 'Upload story image: {{path}}'
+    deleteMedia: 'Delete story image: {{path}}'
+
+site_url: https://testrapid-r10.vercel.app
+display_url: https://testrapid-r10.vercel.app
+
+# Site-wide fallback for uploads (unused today); the stories collection keeps its photos next to the stories
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: stories
+    label: Featured stories
+    label_singular: Featured story
+    description: The museum wall on the home page. Each story also gets its own page at /stories/<file name>/. Lower "order" numbers appear first on the wall.
+    folder: src/content/stories
+    extension: md
+    format: frontmatter
+    create: true
+    delete: true
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{order}}. {{title}}'
+    sortable_fields: [order, date, title]
+    preview_path: /stories/{{slug}}/
+    media_folder: images
+    public_folder: ./images
+    fields:
+      - { name: order, label: Position on the wall, widget: number, value_type: int, min: 1, hint: '1 = first frame on the wall.' }
+      - { name: title, label: Title, widget: string }
+      - { name: tag, label: Type, widget: select, options: [News, Story], default: News }
+      - { name: youth, label: Youth story, widget: boolean, default: false, hint: 'Shows the gold Youth label.' }
+      - { name: date, label: Date published, widget: datetime, date_format: 'YYYY-MM-DD', format: 'YYYY-MM-DD', time_format: false }
+      - { name: place, label: Place, widget: string, hint: 'e.g. Lantapan, Bukidnon' }
+      - { name: summary, label: Short summary, widget: text, hint: 'One sentence shown under the wall and in link previews.' }
+      - { name: image, label: Main photo, widget: image, hint: 'Landscape photo, about 1600px wide.' }
+      - { name: alt, label: Photo description, widget: string, hint: 'Describe what the photo shows, for screen readers.' }
+      - { name: caption, label: Photo caption, widget: string, required: false }
+      - { name: author, label: Author, widget: string }
+      - { name: unit, label: Office, widget: string, hint: 'e.g. RCU X' }
+      - { name: articleId, label: dtirapid.ph article number, widget: number, value_type: int, required: false, hint: 'Only for stories copied from dtirapid.ph.' }
+      - { name: source, label: Original article link, widget: string, required: false, hint: 'Shows the "First published on dtirapid.ph" credit when filled in.' }
+      - { name: body, label: Story text, widget: markdown }

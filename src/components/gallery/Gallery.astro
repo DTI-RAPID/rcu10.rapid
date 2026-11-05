@@ -1,12 +1,15 @@
 ---
 import { getImage } from 'astro:assets';
 import MuseumCarousel, { type GalleryItem } from './MuseumCarousel';
-import { news, link } from '../../data/rapid';
+import { link } from '../../data/rapid';
+import { getStories, storyHref, formatDate } from '../../lib/stories';
 
+const stories = await getStories();
 const items: GalleryItem[] = await Promise.all(
-	news.map(async ({ image, ...n }) => {
+	stories.map(async (story) => {
+		const { image, date, tag, youth, place, title, summary, alt } = story.data;
 		const img = await getImage({ src: image, width: 840, format: 'webp' });
-		return { ...n, src: img.src };
+		return { id: story.id, tag, youth, date: formatDate(date), place, title, summary, alt, href: storyHref(story), src: img.src };
 	}),
 );
 ---
