@@ -6,7 +6,7 @@ date: 2026-08-18
 place: Bukidnon
 summary: A step toward stronger youth participation in agriculture and entrepreneurship across Bukidnon youth hubs.
 image: images/145.jpg
-image2: ''
+image2: images/rapid_p1.jpeg
 author: Christian Derrick A. Casite
 unit: RCU X
 articleId: 145
@@ -20,8 +20,6 @@ The Department of Trade and Industry (DTI)-RAPID Growth Project has taken anothe
 The two-day activity brought together **43 youth leaders from various municipalities across the province**, marking the first of four target batches under the initiative. The sessions were designed to equip young participants with practical knowledge and digital skills that can support innovation, entrepreneurship, and greater youth engagement in the agricultural sector.
 
 Through hands-on learning sessions, participants were introduced to **value chain analysis, practical AI collaboration, and geotagging for smart farm management**. These tools are intended to help young people better understand agricultural value chains, explore technology-driven solutions, and identify opportunities for agri-enterprise development in their communities.
-
-![](images/ssf.png)
 
 Beyond technical competencies, the activity also encouraged participants to consider agriculture not only as a livelihood but as a potential space for **innovation, entrepreneurship, and career development**. The youth champions were also introduced to **Basic Entrepreneurial Competencies and Google Career Certificates**, providing them with additional learning pathways to strengthen their skills for future employment and business opportunities.
 
