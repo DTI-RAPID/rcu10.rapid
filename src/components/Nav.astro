@@ -14,7 +14,7 @@ const links = [
 
 <header class="nav-wrap" data-nav>
 	<nav class="nav shell" aria-label="Main">
-		<a href="/#top" class="flex items-center gap-3 rounded-full" aria-label="RAPID Growth Project, Region 10, back to top">
+		<a href="/#top" class="flex items-center gap-3 rounded-sm" aria-label="RAPID Growth Project, Region 10, back to top">
 			<Image src={rapidLogo} alt="" class="h-9 w-auto" loading="eager" />
 			<span class="hidden whitespace-nowrap text-sm leading-tight text-teal sm:block">
 				<span class="block font-semibold">Region 10</span>
@@ -89,7 +89,7 @@ const links = [
 		gap: 1rem;
 		padding-block: 0.5rem;
 		padding-inline: 0.75rem 0.5rem;
-		border-radius: 999px;
+		border-radius: 10px;
 	}
 
 	/* Menu button: three lines that turn into an X when open */
@@ -98,7 +98,7 @@ const links = [
 		place-items: center;
 		width: 2.75rem;
 		height: 2.75rem;
-		border-radius: 50%;
+		border-radius: 6px;
 		background: var(--color-teal);
 		color: var(--color-mist);
 	}
@@ -152,7 +152,7 @@ const links = [
 		-webkit-backdrop-filter: none;
 		margin-top: 0.6rem;
 		padding: 0.75rem;
-		border-radius: 1.5rem;
+		border-radius: 10px;
 		animation: menu-in 0.3s var(--ease-out-quint);
 	}
 	.menu-panel[hidden] {
@@ -167,7 +167,7 @@ const links = [
 		font-size: 1.05rem;
 		font-weight: 600;
 		color: var(--color-teal);
-		border-radius: 0.75rem;
+		border-radius: 4px;
 	}
 	.menu-panel ul a:hover {
 		background: rgb(0 68 80 / 0.06);

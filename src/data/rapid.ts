@@ -99,7 +99,7 @@ export const commodities = ['Coffee', 'Cacao', 'Coconut'];
 
 // News and events from Region 10 (RCU X on dtirapid.ph), newest first.
 // Items already on the museum wall are left out so nothing repeats.
-export const updates: {
+export interface Update {
 	id: number;
 	type: 'News' | 'Event';
 	date: string; // ISO yyyy-mm-dd, as published on dtirapid.ph
@@ -107,7 +107,10 @@ export const updates: {
 	summary: string;
 	image: ImageMetadata;
 	href: string;
-}[] = [
+}
+
+// The entries are checked here (before the link is added), so a wrong type like 'Events' is caught
+const updateItems: Omit<Update, 'href'>[] = [
 	{
 		id: 158,
 		type: 'Event',
@@ -212,7 +215,9 @@ export const updates: {
 		summary: '60 cacao farmers from Kibawe and San Fernando trained on harvesting, fermentation and drying.',
 		image: img149,
 	},
-].map((n) => ({ ...n, href: link(`/webrep_v2/article/${n.id}`) }));
+];
+
+export const updates: Update[] = updateItems.map((n) => ({ ...n, href: link(`/webrep_v2/article/${n.id}`) }));
 
 export const regionNews = link('/webrep_v2/news_and_updates?search=&region=rcu%20x&year=');
 
