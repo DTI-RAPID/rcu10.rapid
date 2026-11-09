@@ -62,3 +62,28 @@ export function photoSlots(blocks: StoryBlock[], count: number): number[] {
 	}
 	return slots;
 }
+
+/**
+ * Placement for each extra photo, honouring the editor's "place after paragraph" numbers.
+ * Returns the block index each photo goes after (-1 = top of the story).
+ *  - after = 0      → top of the story
+ *  - after = N      → after the Nth text block (paragraphs, subheadings and lists each count)
+ *  - after > blocks → after the last block
+ *  - no after       → automatic, spread evenly like photoSlots()
+ */
+export function placePhotos(blocks: StoryBlock[], photos: { after?: number | null }[]): number[] {
+	const autoCount = photos.filter((p) => p.after == null).length;
+	const autoSlots = photoSlots(blocks, autoCount);
+	let a = 0;
+	return photos.map((p) => {
+		if (p.after == null) return autoSlots[a++] ?? blocks.length - 1;
+		return Math.min(p.after, blocks.length) - 1;
+	});
+}
+
+/** Left/right for each photo: the editor's choice, or alternating (1st left, 2nd right…) on "auto". */
+export function photoSide(side: string | undefined, index: number): 'left' | 'right' {
+	if (side === 'left' || side === 'right') return side;
+	return index % 2 === 0 ? 'left' : 'right';
+}
+

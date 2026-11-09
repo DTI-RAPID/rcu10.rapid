@@ -25,6 +25,9 @@ const stories = defineCollection({
 					z.object({
 						image: image(),
 						size: z.enum(['small', 'medium', 'large', 'full']).default('medium'),
+						side: z.enum(['auto', 'left', 'right']).default('auto'),
+						// place after this paragraph number (0 = top); empty = automatic
+						after: z.number().int().min(0).nullish(),
 					}),
 				)
 				.max(4)

@@ -85,7 +85,7 @@ collections:
         required: false
         max: 4
         collapsed: false
-        summary: "{{fields.size}}"
+        summary: "{{fields.size}}, {{fields.side}}"
         thumbnail: image
         hint: "Optional, up to 4 (5 photos in total with the main photo). They are spread through the story text and alternate left and right."
         fields:
@@ -99,6 +99,21 @@ collections:
               - { label: "Medium", value: medium }
               - { label: "Large", value: large }
               - { label: "Full width (no text beside it)", value: full }
+          - name: side
+            label: Side
+            widget: select
+            default: auto
+            options:
+              - { label: "Auto (alternate left and right)", value: auto }
+              - { label: "Left", value: left }
+              - { label: "Right", value: right }
+          - name: after
+            label: Place after paragraph
+            widget: number
+            value_type: int
+            min: 0
+            required: false
+            hint: "Optional. Number of the paragraph to place this photo after (subheadings count as a paragraph). 0 = top of the story. Leave empty for automatic. A number larger than the story puts it at the end."
       - { name: author, label: Author, widget: string }
       - { name: unit, label: Office, widget: string, hint: "e.g. RCU X" }
       - {

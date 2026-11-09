@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import { storyHref, formatDate, type Story } from "../lib/stories";
-import { renderStoryBlocks, photoSlots } from "../lib/storyBody";
+import { renderStoryBlocks, placePhotos, photoSide } from "../lib/storyBody";
 
 interface Props {
   story: Story;
@@ -33,13 +33,14 @@ const published = formatDate(date);
 // Story text, cleaned of pasted Word/Docs artefacts, split into blocks
 const blocks = renderStoryBlocks(story.body ?? "");
 // Extra photos (max 4): the `photos` list, or the older single "second photo"
-const extra = (photos?.length ? photos : image2 ? [{ image: image2, size: "medium" as const }] : []).slice(0, 4);
-const slots = photoSlots(blocks, extra.length);
+const extra = (photos?.length ? photos : image2 ? [{ image: image2, size: "medium" as const, side: "auto" as const, after: null }] : []).slice(0, 4);
+// where each photo goes (-1 = top of the story), honouring the editor's "place after paragraph"
+const slots = placePhotos(blocks, extra);
 // photos to show after each block, alternating left / right
 const after = new Map<number, { image: typeof image; size: string; side: "left" | "right"; n: number }[]>();
 extra.forEach((ph, k) => {
   const list = after.get(slots[k]) ?? [];
-  list.push({ image: ph.image, size: ph.size, side: k % 2 === 0 ? "left" : "right", n: k + 2 });
+  list.push({ image: ph.image, size: ph.size, side: photoSide(ph.side, k), n: k + 2 });
   after.set(slots[k], list);
 });
 const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the story: ${title}`);
@@ -107,6 +108,17 @@ const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the s
 		<article class="story-wrap story-article">
 			<!-- Story text with up to 4 extra photos, alternating left and right -->
 			<div class="story-body">
+				{(after.get(-1) ?? []).map((ph) => (
+					<figure class:list={["story-photo", `size-${ph.size}`, `side-${ph.side}`]}>
+						<Image
+							src={ph.image}
+							alt={photoAlt(ph.n)}
+							widths={[480, 720, 960, 1400]}
+							sizes={ph.size === "full" ? "(min-width: 1024px) 66rem, 92vw" : "(min-width: 1024px) 30rem, 92vw"}
+							class="block h-auto w-full object-cover"
+						/>
+					</figure>
+				))}
 				{
 					blocks.map((b, i) => (
 						<>
