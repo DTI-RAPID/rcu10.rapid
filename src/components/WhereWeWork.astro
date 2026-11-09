@@ -2,7 +2,7 @@
 import { places, commodities } from '../data/rapid';
 import { getStories, storyHref } from '../lib/stories';
 
-// Each pin opens the featured story told about that place
+// The place list links to the featured story told about each place; map pins only highlight on hover
 const stories = await getStories();
 const storyFor = (articleId: number) => storyHref(stories.find((s) => s.data.articleId === articleId)!);
 // Only show places whose story still exists (a story can be removed from the admin page)
@@ -94,11 +94,10 @@ const provinces = [
 				</svg>
 				{
 					pinned.map((p) => (
-						<a
-							href={storyFor(p.article)}
+						<span
 							class="pin"
 							style={`left:${(px(p.lon) / W) * 100}%;top:${(py(p.lat) / H) * 100}%`}
-							aria-label={`${p.name}, ${p.province}: ${p.focus}`}
+							aria-hidden="true"
 							data-pin={p.name}
 						>
 							<span class="pin-up">
@@ -106,7 +105,7 @@ const provinces = [
 								<span class="pin-stem" />
 							</span>
 							<span class="pin-base" />
-						</a>
+						</span>
 					))
 				}
 			</div>
@@ -176,7 +175,6 @@ const provinces = [
 		background: linear-gradient(var(--color-mist), var(--color-gold));
 	}
 	.pin:hover .pin-label,
-	.pin:focus-visible .pin-label,
 	.pin[data-on] .pin-label {
 		background: var(--color-gold);
 		color: var(--color-canopy-deep);

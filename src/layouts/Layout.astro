@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import BackToTop from '../components/BackToTop.astro';
 
 interface Props {
 	title?: string;
@@ -38,6 +39,7 @@ const {
 	</head>
 	<body>
 		<slot />
+		<BackToTop />
 		<script>
 			// Keep older section links working after the anchors were renamed
 			const renamed: Record<string, string> = { stories: 'featured', what: 'what-we-do', where: 'where-we-work' };
