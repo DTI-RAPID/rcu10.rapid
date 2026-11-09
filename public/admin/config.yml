@@ -78,20 +78,34 @@ collections:
           widget: image,
           hint: "Landscape photo, about 1600px wide. Shown at the top of the story.",
         }
-      - {
-          name: image2,
-          label: Second photo,
-          widget: image,
-          required: false,
-          hint: "Optional. Shown on the left inside the story text.",
-        }
+      - name: photos
+        label: More photos
+        label_singular: Photo
+        widget: list
+        required: false
+        max: 4
+        collapsed: false
+        summary: "{{fields.size}}"
+        thumbnail: image
+        hint: "Optional, up to 4 (5 photos in total with the main photo). They are spread through the story text and alternate left and right."
+        fields:
+          - { name: image, label: Photo, widget: image }
+          - name: size
+            label: Size
+            widget: select
+            default: medium
+            options:
+              - { label: "Small", value: small }
+              - { label: "Medium", value: medium }
+              - { label: "Large", value: large }
+              - { label: "Full width (no text beside it)", value: full }
       - { name: author, label: Author, widget: string }
       - { name: unit, label: Office, widget: string, hint: "e.g. RCU X" }
       - {
           name: body,
           label: Story text,
           widget: markdown,
-          hint: "Write the story here. Add photos with the Main photo and Second photo fields above, not inside the text.",
+          hint: "Write or paste the story here (pasting from Word or Google Docs is fine; the text is cleaned on save). A line that is only bold text becomes a subheading. Add photos with the photo fields above, not inside the text.",
         }
       # Set automatically / kept from the original dtirapid.ph articles; not shown to editors
       - { name: articleId, widget: hidden, required: false }
@@ -100,3 +114,5 @@ collections:
       - { name: caption, widget: hidden, required: false }
       - { name: alt, widget: hidden, required: false }
       - { name: alt2, widget: hidden, required: false }
+      # older single extra photo; moved into More photos automatically the next time the story is saved
+      - { name: image2, widget: hidden, required: false }

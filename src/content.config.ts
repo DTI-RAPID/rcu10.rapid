@@ -18,7 +18,19 @@ const stories = defineCollection({
 			summary: z.string(),
 			image: image(),
 			alt: z.string().optional(), // photo description for screen readers; the title is used when empty
-			image2: image().optional(), // second photo, shown on the left inside the story
+			// Extra photos inside the story text (up to 4; with the main photo that makes 5).
+			// They alternate left and right. Size: small, medium, large or full (full width, no text beside it).
+			photos: z
+				.array(
+					z.object({
+						image: image(),
+						size: z.enum(['small', 'medium', 'large', 'full']).default('medium'),
+					}),
+				)
+				.max(4)
+				.optional(),
+			// legacy single extra photo, used when `photos` is empty
+			image2: image().optional(),
 			alt2: z.string().optional(),
 			caption: z.string().optional(),
 			author: z.string(),

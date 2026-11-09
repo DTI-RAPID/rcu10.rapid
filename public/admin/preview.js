@@ -1,0 +1,147 @@
+/*
+ * Admin preview + save cleanup for the Featured stories (Sveltia CMS).
+ *
+ * - The preview is laid out like the real story page: same fonts, sizes and spacing
+ *   (preview.css), and the extra photos are placed between paragraphs, alternating left
+ *   and right, exactly as the website does.
+ * - Before saving, text pasted from Word / Google Docs is cleaned (non-breaking spaces,
+ *   invisible characters, blank-looking lines) so the published page matches the preview.
+ *
+ * The text rules mirror src/lib/storyBody.ts on the website — keep the two in step.
+ */
+(function () {
+	if (!window.CMS || !window.marked) return;
+	var CMS = window.CMS;
+	var marked = window.marked;
+	var h = window.h;
+	var createClass = window.createClass;
+
+	// --- the same rules as src/lib/storyBody.ts ------------------------------------------
+	function cleanBasic(md) {
+		var s = String(md || '')
+			.replace(/\r\n?/g, '\n')
+			.replace(/[​-‍﻿]/g, '')
+			.replace(/ /g, ' ')
+			.replace(/&nbsp;/g, ' ');
+		s = s
+			.split('\n')
+			.map(function (line) {
+				return line.trim() === '' ? '' : line.replace(/[ \t]+$/, '');
+			})
+			.join('\n');
+		return s.replace(/\n{3,}/g, '\n\n').trim();
+	}
+	function cleanStoryText(md) {
+		var s = cleanBasic(md).replace(/^[ \t]*\*\*([^*\n]+?)\*\*[ \t]*$/gm, '\n### $1\n');
+		return s.replace(/\n{3,}/g, '\n\n').trim();
+	}
+	function renderStoryBlocks(md) {
+		return marked
+			.lexer(cleanStoryText(md), { gfm: true, breaks: false })
+			.filter(function (t) {
+				return t.type !== 'space';
+			})
+			.map(function (t) {
+				return { html: marked.parser([t]), isParagraph: t.type === 'paragraph' };
+			});
+	}
+	function photoSlots(blocks, count) {
+		var paras = [];
+		blocks.forEach(function (b, i) {
+			if (b.isParagraph) paras.push(i);
+		});
+		if (!count || !paras.length) return [];
+		var slots = [];
+		for (var k = 0; k < count; k++) {
+			var p = Math.round(((k + 1) * paras.length) / (count + 1));
+			var prev = slots.length ? paras.indexOf(slots[slots.length - 1]) + 1 : 0;
+			p = Math.min(Math.max(p, 2, prev + 1), paras.length);
+			slots.push(paras[p - 1]);
+		}
+		return slots;
+	}
+	// ---------------------------------------------------------------------------------------
+
+	function esc(v) {
+		return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+			return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+		});
+	}
+	function toJS(v) {
+		return v && typeof v.toJS === 'function' ? v.toJS() : v;
+	}
+	function assetUrl(getAsset, path) {
+		if (!path) return '';
+		var a = getAsset(path);
+		return a ? String(a.url || a) : String(path);
+	}
+	function fmtDate(v) {
+		var d = new Date(v);
+		if (isNaN(d)) return esc(v);
+		return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+	}
+
+	CMS.registerPreviewStyle('/admin/preview.css');
+
+	CMS.registerPreviewTemplate(
+		'stories',
+		createClass({
+			render: function () {
+				var entry = this.props.entry;
+				var getAsset = this.props.getAsset;
+				var d = toJS(entry.get('data')) || {};
+				var photos = Array.isArray(d.photos) && d.photos.length ? d.photos : d.image2 ? [{ image: d.image2, size: 'medium' }] : [];
+				photos = photos.filter(function (p) {
+					return p && p.image;
+				}).slice(0, 4);
+
+				var blocks = renderStoryBlocks(d.body);
+				var slots = photoSlots(blocks, photos.length);
+				var body = '';
+				blocks.forEach(function (b, i) {
+					body += b.html;
+					photos.forEach(function (ph, k) {
+						if (slots[k] !== i) return;
+						var side = k % 2 === 0 ? 'left' : 'right';
+						body +=
+							'<figure class="story-photo size-' + esc(ph.size || 'medium') + ' side-' + side + '">' +
+							'<img src="' + esc(assetUrl(getAsset, ph.image)) + '" alt=""></figure>';
+					});
+				});
+
+				var tags = (d.youth ? '<span class="tag tag-youth">Youth</span>' : '') + '<span class="tag tag-' + esc(String(d.tag || 'News').toLowerCase()) + '">' + esc(d.tag || 'News') + '</span>';
+				var html =
+					'<header class="story-head"><div class="wrap head-grid"><div>' +
+					'<div class="tags">' + tags + '</div>' +
+					'<h1 class="story-title">' + esc(d.title) + '</h1></div>' +
+					'<div class="photo-notch">' + (d.image ? '<img class="photo" src="' + esc(assetUrl(getAsset, d.image)) + '" alt="">' : '<div class="photo placeholder">Main photo</div>') +
+					'<div class="notch"><span>' + fmtDate(d.date) + '</span><span>' + esc(d.place) + '</span></div></div>' +
+					'</div></header>' +
+					'<article class="wrap story-article"><div class="story-body">' + body + '</div></article>';
+
+				return h('div', { className: 'story-preview', dangerouslySetInnerHTML: { __html: html } });
+			},
+		}),
+	);
+
+	// Clean pasted text before saving, and move the older single "second photo" into the photo list
+	CMS.registerEventListener({
+		name: 'preSave',
+		handler: function (args) {
+			var data = args.entry.get('data');
+			var body = data.get('body');
+			if (typeof body === 'string') data = data.set('body', cleanBasic(body));
+			try {
+				var photos = data.get('photos');
+				var old = data.get('image2');
+				if (old && !(photos && photos.size)) {
+					var IMap = data.constructor; // the Immutable Map factory Sveltia uses
+					data = data.set('photos', IMap({}).toList().push(IMap({ image: old, size: 'medium' }))).delete('image2');
+				}
+			} catch (e) {
+				/* keep the old field if the conversion isn't possible */
+			}
+			return data;
+		},
+	});
+})();

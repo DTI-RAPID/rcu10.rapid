@@ -1,10 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import { render } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import { storyHref, formatDate, type Story } from "../lib/stories";
+import { renderStoryBlocks, photoSlots } from "../lib/storyBody";
 
 interface Props {
   story: Story;
@@ -26,9 +26,23 @@ const {
   author,
   unit,
   source,
+  photos,
 } = story.data;
-const { Content } = await render(story);
 const published = formatDate(date);
+
+// Story text, cleaned of pasted Word/Docs artefacts, split into blocks
+const blocks = renderStoryBlocks(story.body ?? "");
+// Extra photos (max 4): the `photos` list, or the older single "second photo"
+const extra = (photos?.length ? photos : image2 ? [{ image: image2, size: "medium" as const }] : []).slice(0, 4);
+const slots = photoSlots(blocks, extra.length);
+// photos to show after each block, alternating left / right
+const after = new Map<number, { image: typeof image; size: string; side: "left" | "right"; n: number }[]>();
+extra.forEach((ph, k) => {
+  const list = after.get(slots[k]) ?? [];
+  list.push({ image: ph.image, size: ph.size, side: k % 2 === 0 ? "left" : "right", n: k + 2 });
+  after.set(slots[k], list);
+});
+const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the story: ${title}`);
 ---
 
 <Layout title={`${title} | RAPID Growth Region 10`} description={summary}>
@@ -91,24 +105,27 @@ const published = formatDate(date);
 		</header>
 
 		<article class="story-wrap story-article">
-			<!-- Story text, with photo 2 (the "Second photo" field) on the left -->
-			<div class="story-body" data-story-body>
-				{image2 && (
-					<figure class="photo-2" data-photo-2>
-						<Image src={image2} alt={alt2 || `Photo from the story: ${title}`} widths={[480, 720, 960]} sizes="(min-width: 1024px) 26rem, 92vw" class="block aspect-[4/3] h-auto w-full object-cover" />
-					</figure>
-				)}
-				<Content />
+			<!-- Story text with up to 4 extra photos, alternating left and right -->
+			<div class="story-body">
+				{
+					blocks.map((b, i) => (
+						<>
+							<Fragment set:html={b.html} />
+							{(after.get(i) ?? []).map((ph) => (
+								<figure class:list={["story-photo", `size-${ph.size}`, `side-${ph.side}`]}>
+									<Image
+										src={ph.image}
+										alt={photoAlt(ph.n)}
+										widths={[480, 720, 960, 1400]}
+										sizes={ph.size === "full" ? "(min-width: 1024px) 66rem, 92vw" : "(min-width: 1024px) 30rem, 92vw"}
+										class="block h-auto w-full object-cover"
+									/>
+								</figure>
+							))}
+						</>
+					))
+				}
 			</div>
-			<script is:inline>
-				// Move photo 2 after the second paragraph so the text wraps around it (it stays at the top if scripts are off)
-				(() => {
-					const body = document.querySelector('[data-story-body]');
-					const photo = body && body.querySelector('[data-photo-2]');
-					const paras = body ? body.querySelectorAll(':scope > p') : [];
-					if (photo && paras.length > 2) paras[1].after(photo);
-				})();
-			</script>
 
 			{source && (
 				<aside class="source">
@@ -307,23 +324,68 @@ const published = formatDate(date);
 	.story-body :global(ol) {
 		list-style: decimal;
 	}
-	/* Photos typed into the story text are not shown: a story has at most 2 photos (main + second) */
+	/* Photos typed into the story text are not shown: photos come from the photo fields */
 	.story-body :global(p:has(> img)) {
 		display: none;
 	}
-	/* Photo 2 sits on the left with the text beside it */
-	.photo-2 {
+	/* Subheadings (a bold line on its own in the editor) */
+	.story-body :global(h3) {
+		margin-top: 2em;
+		font-size: 1.2rem;
+		font-weight: 700;
+		line-height: 1.35;
+		color: var(--color-teal);
+	}
+	.story-body :global(blockquote) {
+		margin-top: 1.25em;
+		padding-left: 1.1em;
+		border-left: 3px solid var(--color-leaf);
+		font-style: italic;
+	}
+	.story-body :global(a) {
+		color: var(--color-teal);
+		text-decoration: underline;
+		text-decoration-color: var(--color-leaf);
+		text-underline-offset: 3px;
+	}
+
+	/* Extra photos: alternate left / right, sized by the editor */
+	.story-photo {
 		margin: 2rem 0;
 	}
-	.photo-2 :global(img) {
+	.story-photo :global(img) {
+		aspect-ratio: 4 / 3;
 		border-radius: 8px;
 		box-shadow: 0 24px 40px -24px rgb(3 26 29 / 0.55);
 	}
+	.story-photo.size-full :global(img) {
+		aspect-ratio: 16 / 9;
+	}
 	@media (min-width: 1024px) {
-		.photo-2 {
+		.story-photo.side-left {
 			float: left;
-			width: 40%;
+			clear: left;
 			margin: 0.4rem 2.75rem 1.5rem 0;
+		}
+		.story-photo.side-right {
+			float: right;
+			clear: right;
+			margin: 0.4rem 0 1.5rem 2.75rem;
+		}
+		.story-photo.size-small {
+			width: 30%;
+		}
+		.story-photo.size-medium {
+			width: 40%;
+		}
+		.story-photo.size-large {
+			width: 52%;
+		}
+		.story-photo.size-full {
+			float: none;
+			clear: both;
+			width: 100%;
+			margin: 2.5rem 0;
 		}
 	}
 

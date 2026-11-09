@@ -1,0 +1,64 @@
+import { marked, type Token } from 'marked';
+
+/*
+ * Story text rendering for the story pages.
+ *
+ * Editors often paste articles from Word or Google Docs. That brings invisible characters
+ * (non-breaking spaces, zero-width spaces, Windows line endings) that make Markdown merge
+ * paragraphs or glue a heading onto the paragraph before it. cleanStoryText() fixes those
+ * before rendering, so the page matches what the editor saw in the admin preview.
+ *
+ * The admin preview (public/admin/preview.js) uses the same rules — keep the two in step.
+ */
+
+/** Normalise pasted text so paragraphs and headings come out exactly as written. */
+export function cleanStoryText(md: string): string {
+	let s = md
+		.replace(/\r\n?/g, '\n') // Windows / old Mac line endings
+		.replace(/[​-‍﻿]/g, '') // zero-width characters
+		.replace(/ /g, ' ') // non-breaking spaces from Word/Docs
+		.replace(/&nbsp;/g, ' ');
+	// lines that only contain spaces/tabs count as blank lines (separate paragraphs)
+	s = s
+		.split('\n')
+		.map((line) => (line.trim() === '' ? '' : line.replace(/[ \t]+$/, '')))
+		.join('\n');
+	// a line that is only bold text is a subheading: give it its own block
+	s = s.replace(/^[ \t]*\*\*([^*\n]+?)\*\*[ \t]*$/gm, '\n### $1\n');
+	// at most one empty line between blocks
+	return s.replace(/\n{3,}/g, '\n\n').trim();
+}
+
+export interface StoryBlock {
+	html: string;
+	isParagraph: boolean;
+}
+
+/** Render the story into top-level blocks (paragraphs, subheadings, lists, quotes). */
+export function renderStoryBlocks(md: string): StoryBlock[] {
+	const tokens = marked.lexer(cleanStoryText(md), { gfm: true, breaks: false });
+	return tokens
+		.filter((t: Token) => t.type !== 'space')
+		.map((t: Token) => ({
+			html: marked.parser([t] as never) as string,
+			isParagraph: t.type === 'paragraph',
+		}));
+}
+
+/**
+ * Where to put each extra photo: returns, for each photo, the index of the block it goes after.
+ * Photos are spread evenly through the paragraphs, the first one after the 2nd paragraph.
+ */
+export function photoSlots(blocks: StoryBlock[], count: number): number[] {
+	const paras = blocks.map((b, i) => (b.isParagraph ? i : -1)).filter((i) => i >= 0);
+	if (!count || paras.length === 0) return [];
+	const slots: number[] = [];
+	for (let k = 0; k < count; k++) {
+		// spread across the paragraphs, never before the 2nd one, never two photos in one slot
+		let p = Math.round(((k + 1) * paras.length) / (count + 1));
+		p = Math.max(p, 2, (slots.length ? paras.indexOf(slots[slots.length - 1]) + 1 : 0) + 1);
+		p = Math.min(p, paras.length);
+		slots.push(paras[p - 1]);
+	}
+	return slots;
+}
