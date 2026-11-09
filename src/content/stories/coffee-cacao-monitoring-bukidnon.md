@@ -1,19 +1,19 @@
 ---
-order: 6
-articleId: 140
-title: "RAPID Growth Project Strengthens Monitoring of Coffee and Cacao Expansion Areas in Bukidnon"
+title: RAPID Growth Project Strengthens Monitoring of Coffee and Cacao Expansion Areas in Bukidnon
 tag: News
 youth: false
 date: 2026-07-27
-place: "Bukidnon"
-summary: "Post-planting validation across coffee and cacao expansion areas in the province."
-image: images/140.jpg
-alt: "Young coffee plants on a hillside farm in Bukidnon"
-image2: images/140-2.jpg
-alt2: "A PHIMFACO farmer beside his cacao planting area during post-planting validation in Malaybalay City, Bukidnon"
-author: "Christian Derrick A. Casite"
-unit: "RCU X"
+place: Bukidnon
+summary: Post-planting validation across coffee and cacao expansion areas in the province.
+image: images/140-2.jpg
+image2: images/140.jpg
+author: Christian Derrick A. Casite
+unit: RCU X
+articleId: 140
 source: https://dtirapid.ph/webrep_v2/article/140
+order: 6
+alt: Young coffee plants on a hillside farm in Bukidnon
+alt2: A PHIMFACO farmer beside his cacao planting area during post-planting validation in Malaybalay City, Bukidnon
 ---
 
 The Rural Agro-enterprise Partnership for Inclusive Development (RAPID) Growth Project continues to strengthen its monitoring efforts by conducting a series of post-planting validation activities across coffee and cacao expansion areas in Bukidnon during the first half of 2026.
