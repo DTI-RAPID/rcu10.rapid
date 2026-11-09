@@ -6,9 +6,9 @@ backend:
   repo: DTI-RAPID/rcu10.rapid
   branch: main
   commit_messages:
-    create: "Add featured story: {{slug}}"
-    update: "Update featured story: {{slug}}"
-    delete: "Delete featured story: {{slug}}"
+    create: "Add {{collection}}: {{slug}}"
+    update: "Update {{collection}}: {{slug}}"
+    delete: "Delete {{collection}}: {{slug}}"
     uploadMedia: "Upload story image: {{path}}"
     deleteMedia: "Delete story image: {{path}}"
 
@@ -131,3 +131,31 @@ collections:
       - { name: alt2, widget: hidden, required: false }
       # older single extra photo; moved into More photos automatically the next time the story is saved
       - { name: image2, widget: hidden, required: false }
+
+  # Home page switches: hide or show sections without deleting them, and pick the featured wall style
+  - name: settings
+    label: Site settings
+    description: Turn home page sections on or off and choose the featured wall style. Hidden sections are kept and come back exactly as they were when switched on.
+    editor:
+      preview: false
+    files:
+      - name: homepage
+        label: Home page sections
+        file: src/data/homepage.json
+        format: json
+        fields:
+          - { name: showHero, label: "Show Hero (3D banner)", widget: boolean, default: false }
+          - { name: showAbout, label: "Show About (Introducing the RAPID Growth Project)", widget: boolean, default: false }
+          - { name: showImpact, label: "Show Impact (numbers)", widget: boolean, default: false }
+          - { name: showWhatWeDo, label: "Show What the project does", widget: boolean, default: false }
+          - { name: showWhereWeWork, label: "Show Where we work (Region 10 map)", widget: boolean, default: false }
+          - { name: showFeatured, label: "Show Featured stories", widget: boolean, default: true }
+          - { name: showNews, label: "Show News and events", widget: boolean, default: true }
+          - name: featuredStyle
+            label: Featured wall style
+            widget: select
+            default: clean
+            hint: "Clean = large photo with its title card, no frame. Museum = framed photos with the story summary underneath (the earlier look)."
+            options:
+              - { label: "Clean: large photo, no frame", value: clean }
+              - { label: "Museum: framed photos with summary", value: museum }

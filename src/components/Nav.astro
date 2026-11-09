@@ -2,14 +2,16 @@
 import { Image } from 'astro:assets';
 import rapidLogo from '../assets/logos/rapid.svg';
 import { about } from '../data/rapid';
+import home from '../data/homepage.json';
 
+// Only link to sections that are switched on in the admin (Site settings → Home page sections)
 const links = [
-	{ label: 'About', href: '/#about' },
-	{ label: 'Impact', href: '/#impact' },
-	{ label: 'Where we work', href: '/#where-we-work' },
-	{ label: 'Featured', href: '/#featured' },
-	{ label: 'News', href: '/#news' },
-];
+	{ label: 'About', href: '/#about', show: home.showAbout },
+	{ label: 'Impact', href: '/#impact', show: home.showImpact },
+	{ label: 'Where we work', href: '/#where-we-work', show: home.showWhereWeWork },
+	{ label: 'Featured', href: '/#featured', show: home.showFeatured },
+	{ label: 'News', href: '/#news', show: home.showNews },
+].filter((l) => l.show);
 ---
 
 <header class="nav-wrap" data-nav>

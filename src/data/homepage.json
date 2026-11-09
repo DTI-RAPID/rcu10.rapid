@@ -1,0 +1,10 @@
+{
+  "showHero": false,
+  "showAbout": false,
+  "showImpact": false,
+  "showWhatWeDo": false,
+  "showWhereWeWork": false,
+  "showFeatured": true,
+  "showNews": true,
+  "featuredStyle": "clean"
+}

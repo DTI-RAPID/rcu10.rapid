@@ -9,18 +9,28 @@ import WhereWeWork from '../components/WhereWeWork.astro';
 import Gallery from '../components/gallery/Gallery.astro';
 import NewsEvents from '../components/NewsEvents.astro';
 import Footer from '../components/Footer.astro';
+// Which sections are shown is set in the admin: Site settings → Home page sections.
+// Hidden sections are not deleted; switching them back on restores them as they were.
+import s from '../data/homepage.json';
 ---
 
 <Layout>
 	<Nav />
-	<main>
-		<Hero />
-		<About />
-		<Impact />
-		<WhatWeDo />
-		<WhereWeWork />
-		<Gallery />
-		<NewsEvents />
+	<main class:list={{ 'no-hero': !s.showHero }}>
+		{s.showHero && <Hero />}
+		{s.showAbout && <About />}
+		{s.showImpact && <Impact />}
+		{s.showWhatWeDo && <WhatWeDo />}
+		{s.showWhereWeWork && <WhereWeWork />}
+		{s.showFeatured && <Gallery />}
+		{s.showNews && <NewsEvents />}
 	</main>
 	<Footer />
 </Layout>
+
+<style>
+	/* Without the hero, the first section sits under the fixed menu bar: give it room */
+	.no-hero > :global(section:first-child) {
+		padding-top: clamp(8rem, 12vw, 10rem);
+	}
+</style>

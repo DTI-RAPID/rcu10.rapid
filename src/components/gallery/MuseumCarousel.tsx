@@ -18,7 +18,11 @@ const AUTOPLAY_MS = 6000;
 
 const mod = (n: number, m: number) => ((n % m) + m) % m;
 
-export default function MuseumCarousel({ items }: { items: GalleryItem[] }) {
+/** 'museum' = framed photos with the summary below; 'clean' = larger photos, no frame, no summary */
+export type WallVariant = 'museum' | 'clean';
+
+export default function MuseumCarousel({ items, variant = 'museum' }: { items: GalleryItem[]; variant?: WallVariant }) {
+	const clean = variant === 'clean';
 	const n = items.length;
 	const room = useRef<HTMLDivElement>(null);
 	const frames = useRef<(HTMLLIElement | null)[]>([]);
@@ -35,7 +39,9 @@ export default function MuseumCarousel({ items }: { items: GalleryItem[] }) {
 		const el = room.current;
 		if (!el) return;
 		const w = el.clientWidth;
-		const cardW = Math.min(420, Math.max(250, w * 0.34));
+		const cardW = clean
+			? Math.min(600, Math.max(260, w < 640 ? w * 0.82 : w * 0.48)) // phones: most of the screen width
+			: Math.min(420, Math.max(250, w * 0.34));
 		const radius = cardW * 2.3;
 		el.style.setProperty('--card-w', `${cardW}px`);
 		frames.current.forEach((f, i) => {
@@ -49,7 +55,7 @@ export default function MuseumCarousel({ items }: { items: GalleryItem[] }) {
 			f.style.visibility = abs > 2.4 ? 'hidden' : 'visible';
 			f.style.zIndex = String(10 - Math.round(abs));
 		});
-	}, [n]);
+	}, [n, clean]);
 
 	// Spring the position toward the target
 	useEffect(() => {
@@ -144,7 +150,7 @@ export default function MuseumCarousel({ items }: { items: GalleryItem[] }) {
 
 	return (
 		<div
-			className="museum"
+			className={clean ? "museum museum--clean" : "museum"}
 			role="region"
 			aria-roledescription="carousel"
 			aria-label="News and stories"
@@ -227,11 +233,18 @@ export default function MuseumCarousel({ items }: { items: GalleryItem[] }) {
 				</button>
 			</div>
 
-			<p className="museum-live" aria-live="polite">
-				{items[active].summary}
-			</p>
+			{clean ? (
+				// Clean style shows no summary; screen readers still hear which story is in front
+				<p className="sr-only" aria-live="polite">
+					{items[active].title}
+				</p>
+			) : (
+				<p className="museum-live" aria-live="polite">
+					{items[active].summary}
+				</p>
+			)}
 
-			<p className="museum-hint">Drag the wall or use the arrow keys. Select a frame to read the full story.</p>
+			<p className="museum-hint">Drag the wall or use the arrow keys. Select a {clean ? "photo" : "frame"} to read the full story.</p>
 		</div>
 	);
 }
