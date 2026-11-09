@@ -126,11 +126,8 @@ img {
 .story-body p {
 	margin-top: 1.25em;
 }
-.story-body > p:first-of-type {
+.story-body > :first-child {
 	margin-top: 0;
-	font-size: 1.28rem;
-	line-height: 1.6;
-	color: var(--ink);
 }
 .story-body strong {
 	font-weight: 700;

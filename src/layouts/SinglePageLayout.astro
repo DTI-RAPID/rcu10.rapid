@@ -284,11 +284,8 @@ const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the s
 	.story-body :global(p) {
 		margin-top: 1.25em;
 	}
-	.story-body :global(> p:first-of-type) {
+	.story-body > :global(:first-child) {
 		margin-top: 0;
-		font-size: 1.28rem;
-		line-height: 1.6;
-		color: var(--color-ink);
 	}
 	.story-body :global(strong) {
 		font-weight: 700;
