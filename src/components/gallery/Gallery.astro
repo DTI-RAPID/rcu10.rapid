@@ -245,17 +245,65 @@ const items: GalleryItem[] = await Promise.all(
 
 	/* ---- "Clean" wall style: large photo with its title card, no frame, no spotlight ---- */
 	.museum--clean .museum-room {
-		height: clamp(500px, calc(var(--card-w, 480px) * 0.75 + 230px), 760px);
+		/* just the card plus room for the position markers underneath */
+		height: calc(var(--card-w, 480px) * 0.625 + 205px);
+	}
+	/* arrows beside the photo (vertically centred on it), markers right under the card */
+	.museum--clean .museum-controls {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		height: calc(var(--card-w, 480px) * 0.625 + 205px);
+		margin: 0;
+		pointer-events: none;
+	}
+	.museum--clean .museum-controls > button {
+		position: absolute;
+		top: calc(var(--card-w, 480px) * 0.3125 + 1.5rem);
+		transform: translateY(-50%);
+		pointer-events: auto;
+		background: rgb(3 26 29 / 0.55);
+		backdrop-filter: blur(6px);
+	}
+	.museum--clean .museum-controls > button:first-child {
+		left: max(0.5rem, calc(50% - var(--card-w, 480px) / 2 - 4.25rem));
+	}
+	.museum--clean .museum-controls > button:last-child {
+		right: max(0.5rem, calc(50% - var(--card-w, 480px) / 2 - 4.25rem));
+	}
+	.museum--clean .museum-index {
+		position: absolute;
+		left: 50%;
+		bottom: 0.4rem;
+		transform: translateX(-50%);
+		pointer-events: auto;
 	}
 	.museum--clean .museum-frame {
-		top: 5%;
+		top: 1.5rem;
 	}
 	.museum--clean .museum-frame a {
 		overflow: hidden;
 		border-radius: 10px;
 		box-shadow: 0 40px 60px -30px rgb(0 0 0 / 0.85);
 	}
-	.museum--clean .museum-frame .spot {
+	/* side cards: dimmed as a whole (photo and title card together), brighten on hover */
+	.museum--clean .museum-frame {
+		transform-origin: 50% 40%;
+		filter: brightness(calc(0.5 + var(--lit) * 0.5)) saturate(calc(0.6 + var(--lit) * 0.4));
+		transition: filter 0.3s;
+	}
+	.museum--clean .museum-frame .frame {
+		filter: none;
+	}
+	.museum--clean .museum-frame .placard {
+		opacity: 1;
+	}
+	.museum--clean .museum-frame:hover {
+		filter: brightness(calc(0.7 + var(--lit) * 0.3));
+	}
+	.museum--clean .museum-frame .spot,
+	.museum--clean .museum-floor {
 		display: none;
 	}
 	.museum--clean .museum-frame .frame {
@@ -290,9 +338,6 @@ const items: GalleryItem[] = await Promise.all(
 		font-size: 0.8rem;
 	}
 	@media (max-width: 640px) {
-		.museum--clean .museum-room {
-			height: 470px;
-		}
 		.museum--clean .placard {
 			padding: 0.9rem 1rem 1rem;
 		}

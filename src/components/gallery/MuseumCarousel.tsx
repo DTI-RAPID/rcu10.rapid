@@ -44,13 +44,22 @@ export default function MuseumCarousel({ items, variant = 'museum' }: { items: G
 			: Math.min(420, Math.max(250, w * 0.34));
 		const radius = cardW * 2.3;
 		el.style.setProperty('--card-w', `${cardW}px`);
+		// the controls (outside the room) also need the card width, to sit beside the photo
+		el.parentElement?.style.setProperty('--card-w', `${cardW}px`);
 		frames.current.forEach((f, i) => {
 			if (!f) return;
 			const off = mod(i - pos.current + n / 2, n) - n / 2;
 			const abs = Math.abs(off);
-			const angle = -off * STEP;
-			f.style.transform = `translateZ(${radius}px) rotateY(${angle}deg) translateZ(${-radius}px)`;
-			f.style.opacity = String(Math.max(0, Math.min(1, 2.4 - abs)));
+			if (clean) {
+				// Clean: flat slider. Neighbours sit beside the front card, smaller and dimmed (no tilt)
+				const scale = 1 - Math.min(abs, 2) * 0.14;
+				f.style.transform = `translateX(${off * cardW * 1.1}px) scale(${scale})`;
+				f.style.opacity = String(Math.max(0, Math.min(1, 1.9 - abs * 0.9)));
+			} else {
+				const angle = -off * STEP;
+				f.style.transform = `translateZ(${radius}px) rotateY(${angle}deg) translateZ(${-radius}px)`;
+				f.style.opacity = String(Math.max(0, Math.min(1, 2.4 - abs)));
+			}
 			f.style.setProperty('--lit', String(Math.max(0, 1 - abs)));
 			f.style.visibility = abs > 2.4 ? 'hidden' : 'visible';
 			f.style.zIndex = String(10 - Math.round(abs));
@@ -182,6 +191,14 @@ export default function MuseumCarousel({ items, variant = 'museum' }: { items: G
 						>
 							<a
 								href={item.href}
+								onClick={(e) => {
+									// Clean style: clicking a side card brings it to the front instead of opening it.
+									// Uses the card that is visibly in front (focus may already have started moving it).
+									if (clean && mod(Math.round(pos.current), n) !== i) {
+										e.preventDefault();
+										goTo(i);
+									}
+								}}
 								draggable={false}
 								onFocus={() => goTo(i)}
 								aria-label={`Read the story: ${item.title}`}
