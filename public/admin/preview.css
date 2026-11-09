@@ -218,3 +218,15 @@ img {
 .story-photo.size-full img {
 	aspect-ratio: 16 / 9;
 }
+
+/* Photo caption: small grey italic line under a photo */
+.photo-caption {
+	margin-top: 0.6rem;
+	font-size: 0.9375rem;
+	font-style: italic;
+	line-height: 1.5;
+	color: rgb(14 35 38 / 0.55);
+}
+.photo-caption--dark {
+	color: rgb(233 239 234 / 0.6);
+}

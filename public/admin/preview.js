@@ -121,7 +121,9 @@
 						if (slots[k] !== i) return;
 						out +=
 							'<figure class="story-photo size-' + esc(ph.size || 'medium') + ' side-' + photoSide(ph.side, k) + '">' +
-							'<img src="' + esc(assetUrl(getAsset, ph.image)) + '" alt=""></figure>';
+							'<img src="' + esc(assetUrl(getAsset, ph.image)) + '" alt="">' +
+							(ph.caption && String(ph.caption).trim() ? '<figcaption class="photo-caption">' + esc(String(ph.caption).trim()) + '</figcaption>' : '') +
+							'</figure>';
 					});
 					return out;
 				};
@@ -135,8 +137,10 @@
 					'<header class="story-head"><div class="wrap head-grid"><div>' +
 					'<div class="tags">' + tags + '</div>' +
 					'<h1 class="story-title">' + esc(d.title) + '</h1></div>' +
-					'<div class="photo-notch">' + (d.image ? '<img class="photo" src="' + esc(assetUrl(getAsset, d.image)) + '" alt="">' : '<div class="photo placeholder">Main photo</div>') +
+					'<div><div class="photo-notch">' + (d.image ? '<img class="photo" src="' + esc(assetUrl(getAsset, d.image)) + '" alt="">' : '<div class="photo placeholder">Main photo</div>') +
 					'<div class="notch"><span>' + fmtDate(d.date) + '</span><span>' + esc(d.place) + '</span></div></div>' +
+					(d.caption && String(d.caption).trim() ? '<p class="photo-caption photo-caption--dark">' + esc(String(d.caption).trim()) + '</p>' : '') +
+					'</div>' +
 					'</div></header>' +
 					'<article class="wrap story-article"><div class="story-body">' + body + '</div></article>';
 

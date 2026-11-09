@@ -28,6 +28,8 @@ const stories = defineCollection({
 						side: z.enum(['auto', 'left', 'right']).default('auto'),
 						// place after this paragraph number (0 = top); empty = automatic
 						after: z.number().int().min(0).nullish(),
+						// optional line under the photo, e.g. "Photo by ..."
+						caption: z.string().optional(), // optional line under the main photo
 					}),
 				)
 				.max(4)
@@ -35,7 +37,7 @@ const stories = defineCollection({
 			// legacy single extra photo, used when `photos` is empty
 			image2: image().optional(),
 			alt2: z.string().optional(),
-			caption: z.string().optional(),
+			caption: z.string().optional(), // optional line under the main photo
 			author: z.string(),
 			unit: z.string(),
 			source: z.string().optional(), // link to the original article; shows the credit block

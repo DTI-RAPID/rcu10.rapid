@@ -27,6 +27,7 @@ const {
   unit,
   source,
   photos,
+  caption,
 } = story.data;
 const published = formatDate(date);
 
@@ -37,10 +38,10 @@ const extra = (photos?.length ? photos : image2 ? [{ image: image2, size: "mediu
 // where each photo goes (-1 = top of the story), honouring the editor's "place after paragraph"
 const slots = placePhotos(blocks, extra);
 // photos to show after each block, alternating left / right
-const after = new Map<number, { image: typeof image; size: string; side: "left" | "right"; n: number }[]>();
+const after = new Map<number, { image: typeof image; size: string; side: "left" | "right"; n: number; caption?: string }[]>();
 extra.forEach((ph, k) => {
   const list = after.get(slots[k]) ?? [];
-  list.push({ image: ph.image, size: ph.size, side: photoSide(ph.side, k), n: k + 2 });
+  list.push({ image: ph.image, size: ph.size, side: photoSide(ph.side, k), n: k + 2, caption: "caption" in ph ? ph.caption?.trim() : undefined });
   after.set(slots[k], list);
 });
 const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the story: ${title}`);
@@ -107,6 +108,7 @@ const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the s
 							</span>
 						</div>
 					</div>
+					{caption?.trim() && <figcaption class="photo-caption photo-caption--dark">{caption.trim()}</figcaption>}
 				</figure>
 			</div>
 		</header>
@@ -123,6 +125,7 @@ const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the s
 							sizes={ph.size === "full" ? "(min-width: 1024px) 66rem, 92vw" : "(min-width: 1024px) 30rem, 92vw"}
 							class="block h-auto w-full object-cover"
 						/>
+						{ph.caption && <figcaption class="photo-caption">{ph.caption}</figcaption>}
 					</figure>
 				))}
 				{
@@ -138,6 +141,7 @@ const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the s
 										sizes={ph.size === "full" ? "(min-width: 1024px) 66rem, 92vw" : "(min-width: 1024px) 30rem, 92vw"}
 										class="block h-auto w-full object-cover"
 									/>
+									{ph.caption && <figcaption class="photo-caption">{ph.caption}</figcaption>}
 								</figure>
 							))}
 						</>
@@ -392,6 +396,18 @@ const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the s
 	}
 	.story-photo.size-full :global(img) {
 		aspect-ratio: 16 / 9;
+	}
+	/* Photo caption: small grey italic line under a photo (3px smaller than the story text) */
+	.photo-caption {
+		margin-top: 0.6rem;
+		font-family: var(--font-sans);
+		font-size: 0.9375rem;
+		font-style: italic;
+		line-height: 1.5;
+		color: rgb(14 35 38 / 0.55);
+	}
+	.photo-caption--dark {
+		color: rgb(233 239 234 / 0.6);
 	}
 	@media (min-width: 1024px) {
 		.story-photo.side-left {

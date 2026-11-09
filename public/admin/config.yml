@@ -72,6 +72,13 @@ collections:
           widget: image,
           hint: "Landscape photo, about 1600px wide. Shown at the top of the story.",
         }
+      - {
+          name: caption,
+          label: Main photo caption,
+          widget: string,
+          required: false,
+          hint: "Optional. Small grey text under the photo, e.g. Photo by Juan Dela Cruz.",
+        }
       - name: photos
         label: More photos
         label_singular: Photo
@@ -84,6 +91,11 @@ collections:
         hint: "Optional, up to 4 (5 photos in total with the main photo). They are spread through the story text and alternate left and right."
         fields:
           - { name: image, label: Photo, widget: image }
+          - name: caption
+            label: Caption
+            widget: string
+            required: false
+            hint: "Optional. Small grey text under the photo, e.g. Photo by Juan Dela Cruz."
           - name: size
             label: Size
             widget: select
@@ -120,7 +132,6 @@ collections:
       - { name: articleId, widget: hidden, required: false }
       - { name: source, widget: hidden, required: false }
       - { name: order, widget: hidden, required: false }
-      - { name: caption, widget: hidden, required: false }
       # the summary is now taken from the first paragraph of the story text
       - { name: summary, widget: hidden, required: false }
       - { name: alt, widget: hidden, required: false }
