@@ -19,6 +19,19 @@ display_url: https://rcu10-rapid.vercel.app
 media_folder: public/uploads
 public_folder: /uploads
 
+# Shrink photos in the browser before they are saved. Phone photos are often 5–10 MB each, and a story
+# with several of them is sent to GitHub in one request that is too large ("Failed to fetch").
+# Photos larger than 2400px are scaled down (never up) and saved as WebP, usually 300–800 KB.
+media_libraries:
+  default:
+    config:
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2400
+          height: 2400
+
 collections:
   - name: stories
     label: Featured stories
@@ -129,15 +142,15 @@ collections:
           hint: "The first paragraph is used as the summary on the home page and in link previews. Write or paste the story here (pasting from Word or Google Docs is fine; the text is cleaned on save). A line that is only bold text becomes a subheading. Add photos with the photo fields above, not inside the text.",
         }
       # Set automatically / kept from the original dtirapid.ph articles; not shown to editors
-      - { name: articleId, widget: hidden, required: false }
-      - { name: source, widget: hidden, required: false }
-      - { name: order, widget: hidden, required: false }
+      - { name: articleId, widget: hidden }
+      - { name: source, widget: hidden }
+      - { name: order, widget: hidden }
       # the summary is now taken from the first paragraph of the story text
-      - { name: summary, widget: hidden, required: false }
-      - { name: alt, widget: hidden, required: false }
-      - { name: alt2, widget: hidden, required: false }
+      - { name: summary, widget: hidden }
+      - { name: alt, widget: hidden }
+      - { name: alt2, widget: hidden }
       # older single extra photo; moved into More photos automatically the next time the story is saved
-      - { name: image2, widget: hidden, required: false }
+      - { name: image2, widget: hidden }
 
   # Home page switches: hide or show sections without deleting them, and pick the featured wall style
   - name: settings
