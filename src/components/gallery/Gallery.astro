@@ -467,6 +467,29 @@ const heroItems: HeroItem[] =
 		align-items: center;
 		gap: 1.5rem;
 	}
+	/* phones and tablets: the controls sit just under the story text */
+	@media (max-width: 1023px) {
+		.fh-content {
+			padding-bottom: 6rem;
+		}
+		.fh-controls {
+			bottom: 1.75rem;
+		}
+	}
+	/* desktop: the controls sit on the right, level with the Read the story button */
+	@media (min-width: 1024px) {
+		.fh-controls {
+			bottom: 8.5rem;
+			justify-content: flex-end;
+			pointer-events: none; /* the empty part of the row must not cover the button */
+		}
+		.fh-controls > * {
+			pointer-events: auto;
+		}
+		.fh-controls > div:first-child {
+			flex: 0 1 16rem;
+		}
+	}
 	.fh-progress {
 		position: relative;
 		flex: 1;
