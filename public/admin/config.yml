@@ -12,8 +12,8 @@ backend:
     uploadMedia: "Upload story image: {{path}}"
     deleteMedia: "Delete story image: {{path}}"
 
-site_url: https://testrapid-r10.vercel.app
-display_url: https://testrapid-r10.vercel.app
+site_url: https://rcu10-rapid.vercel.app
+display_url: https://rcu10-rapid.vercel.app
 
 # Site-wide fallback for uploads (unused today); the stories collection keeps its photos next to the stories
 media_folder: public/uploads
