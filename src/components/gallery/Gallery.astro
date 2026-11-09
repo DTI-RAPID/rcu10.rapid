@@ -388,12 +388,24 @@ const heroItems: HeroItem[] =
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transform: scale(1.07);
-		transition: transform 9s cubic-bezier(0.2, 0.6, 0.2, 1);
 		user-select: none;
 	}
+	/* slow zoom-out each time a story appears, including the first one on page load */
 	.fh-photo.is-active {
-		transform: scale(1);
+		animation: fh-zoom 9s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+	}
+	@keyframes fh-zoom {
+		from {
+			transform: scale(1.07);
+		}
+		to {
+			transform: scale(1);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.fh-photo.is-active {
+			animation: none;
+		}
 	}
 	/* darker on the left (text side) and at the bottom (controls) */
 	.fh-shade {

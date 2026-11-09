@@ -83,3 +83,51 @@
       border-color 0.25s;
   }
 }
+
+/*
+ * Page transitions between the home page and story pages (cross-document View Transitions).
+ * The story photo and title glide into place, the menu bar stays put, the rest fades and rises.
+ * Browsers without support simply change pages; reduced-motion visitors get no animation.
+ */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root) {
+  animation: page-out 0.42s cubic-bezier(0.33, 0, 0.67, 1) both;
+}
+::view-transition-new(root) {
+  animation: page-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+/* the shared photo and title glide slowly and softly into place */
+::view-transition-group(*) {
+  animation-duration: 0.85s;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+::view-transition-old(*.story-photo),
+::view-transition-new(*.story-photo) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation-duration: 0.85s;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+/* the menu bar does not move */
+::view-transition-group(site-nav) {
+  animation: none;
+}
+@keyframes page-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: scale(1.008);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}

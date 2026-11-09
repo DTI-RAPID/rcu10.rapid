@@ -73,7 +73,10 @@ export default function FeaturedHero({ items }: { items: HeroItem[] }) {
 								src={item.src}
 								alt={item.alt}
 								className={cn('fh-photo', active && 'is-active')}
-								loading={i === 0 ? 'eager' : 'lazy'}
+								// page transition: this photo glides into the story page's main photo
+								style={active ? ({ viewTransitionName: `sp-${item.id}`, viewTransitionClass: 'story-photo' } as React.CSSProperties) : undefined}
+								// all stacked photos load up front so each zoom plays on a ready image
+								loading="eager"
 								fetchPriority={i === 0 ? 'high' : 'auto'}
 								draggable={false}
 							/>
@@ -89,7 +92,10 @@ export default function FeaturedHero({ items }: { items: HeroItem[] }) {
 										{item.youth && <Badge variant="youth">Youth</Badge>}
 										<Badge variant={item.tag === 'Story' ? 'story' : 'news'}>{item.tag}</Badge>
 									</div>
-									<h3 className="fh-title display mt-5">
+									<h3
+										className="fh-title display mt-5"
+										style={active ? ({ viewTransitionName: `st-${item.id}`, viewTransitionClass: 'story-title' } as React.CSSProperties) : undefined}
+									>
 										<a href={item.href} className="focus-visible:outline-gold">
 											{item.title}
 										</a>

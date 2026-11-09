@@ -53,7 +53,7 @@ const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the s
 			<div class="story-wrap grid items-center gap-10 pb-14 pt-24 sm:pt-32 lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:pb-16">
 				<div>
 					<div class="flex flex-wrap items-center justify-between gap-3">
-						<a href="/#featured" class="back inline-flex items-center gap-2 text-sm font-semibold text-mist/75 hover:text-mist">
+						<a href="/#featured" data-back-home class="back inline-flex items-center gap-2 text-sm font-semibold text-mist/75 hover:text-mist">
 							<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
 								<path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"></path>
 							</svg>
@@ -69,7 +69,12 @@ const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the s
 						{youth && <span class="tag tag-youth">Youth</span>}
 						<span class={`tag tag-${tag.toLowerCase()}`}>{tag}</span>
 					</div>
-					<h1 class="story-title display mt-5 text-[clamp(1.6rem,2.4vw,2.25rem)]">{title}</h1>
+					<h1
+						class="story-title display mt-5 text-[clamp(1.6rem,2.4vw,2.25rem)]"
+						style={`view-transition-name: st-${story.id}; view-transition-class: story-title;`}
+					>
+						{title}
+					</h1>
 				</div>
 
 				<!-- Photo 1, with an inverted (cut-out) corner holding the date and place -->
@@ -83,6 +88,7 @@ const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the s
 							loading="eager"
 							fetchpriority="high"
 							class="photo block aspect-[4/3] h-auto w-full object-cover"
+							style={`view-transition-name: sp-${story.id}; view-transition-class: story-photo;`}
 						/>
 						<div class="notch">
 							<span class="notch-row">
@@ -155,7 +161,7 @@ const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the s
 			<div class="shell py-20 sm:py-24">
 				<div class="flex flex-wrap items-end justify-between gap-6">
 					<h2 class="display text-[clamp(1.8rem,3.4vw,2.6rem)] text-teal">More featured stories</h2>
-					<a href="/#featured" class="font-semibold text-teal underline decoration-leaf decoration-2 underline-offset-[6px] hover:decoration-teal">
+					<a href="/#featured" data-back-home class="font-semibold text-teal underline decoration-leaf decoration-2 underline-offset-[6px] hover:decoration-teal">
 						Back to the featured wall
 					</a>
 				</div>
@@ -184,6 +190,23 @@ const photoAlt = (n: number) => (n === 2 && alt2 ? alt2 : `Photo ${n} from the s
 		</nav>
 	</main>
 	<Footer />
+	<script is:inline>
+		// "Featured stories" / "Back to the featured wall": if we came here from the home page, go back
+		// in history instead, so the home page returns exactly as it was and the photo glides back.
+		document.querySelectorAll('[data-back-home]').forEach(function (link) {
+			link.addEventListener('click', function (e) {
+				try {
+					var from = document.referrer ? new URL(document.referrer) : null;
+					if (from && from.origin === location.origin && from.pathname === '/' && history.length > 1) {
+						e.preventDefault();
+						history.back();
+					}
+				} catch (err) {
+					/* fall back to the normal link */
+				}
+			});
+		});
+	</script>
 </Layout>
 
 <style>
