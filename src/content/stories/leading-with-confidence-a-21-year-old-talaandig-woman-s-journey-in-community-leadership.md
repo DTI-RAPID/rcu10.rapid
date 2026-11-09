@@ -4,14 +4,15 @@ tag: Story
 youth: true
 date: 2026-11-09
 place: Lantapan, Bukidnon
-summary: In the coffee-growing community of Kaatuan, Bukidnon, a young indigenous woman discovers how leadership, learning, and service can create opportunities for herself and others.
 image: images/IMG_2296.JPG
-image2: images/Genna with AVP.jpg
+photos: []
 author: Princess G. Dayondon
 unit: RCU 10
+summary: In the coffee-growing community of Kaatuan, Bukidnon, a young indigenous woman discovers how leadership, learning, and service can create opportunities for herself and others.
+image2: images/Genna with AVP.jpg
 ---
 
-Genna Camanian was only 21 years old when she became president of the Paglambu Kaatuan Landcare Cluster (PLKC) in 2022. As a young woman from the Talaandig Indigenous community in Barangay Kaatuan, Lantapan, Bukidnon, she was entrusted with leading an association whose members had far more years of experience than she did.
+_Genna Camanian was only 21 years old when she became president of the Paglambu Kaatuan Landcare Cluster (PLKC) in 2022. As a young woman from the Talaandig Indigenous community in Barangay Kaatuan, Lantapan, Bukidnon, she was entrusted with leading an association whose members had far more years of experience than she did._
 
 Not everyone was convinced that someone her age could handle the responsibility.
 
@@ -24,7 +25,6 @@ But rather than allowing the doubts to discourage her, she chose to keep learnin
 “I did not stop learning. I told myself that I could do it because I trusted my co-members. I wanted to help improve their livelihoods.”
 
 With determination, guidance from experienced association members, and support from the Department of Trade and Industry's Rural Agro-enterprise Partnership for Inclusive Development and Growth (DTI-RAPID Growth) Project, Genna gradually developed the confidence and skills to lead.
-
 
 **Rooted in Coffee and Community**
 
@@ -43,7 +43,7 @@ As she grew older, she came to understand coffee's importance beyond the farm. T
 For Genna, coffee farming was more than a source of livelihood. It was part of her family's identity and one of the reasons she and her siblings had opportunities to pursue their education.
 
 This connection to coffee would later become one of her motivations for serving fellow farmers in her community.
- 
+
 **Learning to Lead Despite the Doubts**
 
 Established in 2008, PLKC is a workers' association based in Barangay Kaatuan, Lantapan, Bukidnon, with 141 members.
@@ -73,7 +73,7 @@ She listened as experienced leaders shared how they started, managed challenges,
 “I never imagined that I would have the opportunity to talk with people who had so much experience and expertise in managing an association or cooperatives,” she reflected.
 
 Genna began to understand that leadership did not require knowing everything from the beginning. It also meant being willing to listen, seek guidance, and learn from others.
- 
+
 **Balancing Leadership, Education, and Family**
 
 However, Genna's responsibilities extended beyond the association. She also had to balance her academic requirements with her leadership responsibilities.
@@ -85,7 +85,7 @@ The support of her fellow officers, DTI-RAPID staff, and family helped her manag
 Her leadership experience also found its way into her education. As a Development Communication student at Bukidnon State University, she shared her experiences as a coffee farmer, an Indigenous youth, and an association leader with her classmates and teachers.
 
 In 2026, she graduated cum laude with a Bachelor of Science in Development Communication, carrying with her the lessons she had gained both inside and outside the classroom.
- 
+
 **Turning Opportunities into Shared Learning**
 
 As Genna became more confident in her role, she also recognized that the opportunities she received could benefit others.
@@ -105,7 +105,7 @@ She also encouraged fellow youth to participate in focus group discussions and e
 For Genna, these engagements offered young people valuable exposure to development partners and government representatives, helping them better understand how development projects support their community and the opportunities available in the coffee value chain.
 
 Her efforts reflected a simple principle she had learned through her own experience: when someone is given an opportunity to learn, that knowledge can become more meaningful when shared with others.
- 
+
 **Seeing Change in the Community**
 
 The changes Genna witnessed extended beyond her personal development as a leader.
@@ -121,7 +121,7 @@ She recalled how elders previously relied on horses to transport agricultural pr
 Now the improved road has made their journey more convenient.
 
 These changes reinforced her belief that the project's benefits should be valued and sustained by the community.
- 
+
 **A Leader Beyond Her Term**
 
 Genna served as PLKC president from 2022 to 2024. Although her term has ended, she continues to see herself as someone who can contribute to the association and her community.
