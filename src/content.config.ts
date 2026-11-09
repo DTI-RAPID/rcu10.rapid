@@ -15,7 +15,7 @@ const stories = defineCollection({
 			youth: z.boolean().default(false),
 			date: z.coerce.date(),
 			place: z.string(),
-			summary: z.string(),
+			summary: z.string().optional(), // legacy; the summary is now the story's first paragraph
 			image: image(),
 			alt: z.string().optional(), // photo description for screen readers; the title is used when empty
 			// Extra photos inside the story text (up to 4; with the main photo that makes 5).

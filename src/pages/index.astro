@@ -30,7 +30,7 @@ import s from '../data/homepage.json';
 
 <style>
 	/* Without the hero, the first section sits under the fixed menu bar: give it room */
-	.no-hero > :global(section:first-child) {
+	.no-hero > :global(section:first-child:not(.featured-hero)) {
 		padding-top: clamp(7rem, 9vw, 8.5rem);
 	}
 </style>

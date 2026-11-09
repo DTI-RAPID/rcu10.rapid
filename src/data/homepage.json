@@ -6,5 +6,5 @@
   "showWhereWeWork": false,
   "showFeatured": true,
   "showNews": true,
-  "featuredStyle": "clean"
+  "featuredStyle": "hero"
 }

@@ -1,22 +1,44 @@
 ---
 import { getImage } from 'astro:assets';
 import MuseumCarousel, { type GalleryItem } from './MuseumCarousel';
+import FeaturedHero, { type HeroItem } from './FeaturedHero';
 import { link } from '../../data/rapid';
 import { getStories, storyHref, formatDate } from '../../lib/stories';
+import { firstParagraph } from '../../lib/storyBody';
 // Wall style is set in the admin: Site settings → Home page sections → Featured wall style
 import home from '../../data/homepage.json';
-const variant = home.featuredStyle === 'museum' ? 'museum' : 'clean';
+const style = home.featuredStyle; // 'hero' | 'clean' | 'museum'
+const variant = style === 'museum' ? 'museum' : 'clean';
 
 const stories = await getStories();
 const items: GalleryItem[] = await Promise.all(
 	stories.map(async (story) => {
-		const { image, date, tag, youth, place, title, summary, alt } = story.data;
+		const { image, date, tag, youth, place, title, alt } = story.data;
+		const summary = firstParagraph(story.body ?? '');
 		const img = await getImage({ src: image, width: 840, format: 'webp' });
 		return { id: story.id, tag, youth, date: formatDate(date), place, title, summary, alt: alt || title, href: storyHref(story), src: img.src };
 	}),
 );
+
+// Hero style: a large photo for the background
+const heroItems: HeroItem[] =
+	style === 'hero'
+		? await Promise.all(
+				stories.map(async (story, i) => {
+					const big = await getImage({ src: story.data.image, width: 1920, format: 'webp' });
+					return { ...items[i], src: big.src };
+				}),
+			)
+		: [];
 ---
 
+{
+	style === 'hero' ? (
+		<section id="featured" class="featured-hero relative bg-canopy-deep text-mist">
+			<h2 class="sr-only">Featured stories</h2>
+			<FeaturedHero client:load items={heroItems} />
+		</section>
+	) : (
 <section id="featured" class="gallery relative overflow-hidden bg-canopy-deep py-24 text-mist sm:py-28">
 	<div class="shell flex flex-wrap items-end justify-between gap-6">
 		<div class="max-w-xl">
@@ -34,6 +56,8 @@ const items: GalleryItem[] = await Promise.all(
 		<MuseumCarousel client:visible items={items} variant={variant} />
 	</div>
 </section>
+	)
+}
 
 <style is:global>
 	.gallery {
@@ -340,6 +364,138 @@ const items: GalleryItem[] = await Promise.all(
 	@media (max-width: 640px) {
 		.museum--clean .placard {
 			padding: 0.9rem 1rem 1rem;
+		}
+	}
+
+	/* ---- "Hero" style: featured stories as the page's hero (FeaturedHero.tsx) ---- */
+	.fh {
+		height: 100svh;
+		min-height: 620px;
+		max-height: 1080px;
+	}
+	.fh [data-slot='carousel-content'] > div {
+		height: 100%;
+	}
+	.fh-slide {
+		position: relative;
+		height: 100%;
+		overflow: hidden;
+		background: var(--color-canopy-deep);
+	}
+	.fh-photo {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transform: scale(1.07);
+		transition: transform 9s cubic-bezier(0.2, 0.6, 0.2, 1);
+		user-select: none;
+	}
+	.fh-photo.is-active {
+		transform: scale(1);
+	}
+	/* darker on the left (text side) and at the bottom (controls) */
+	.fh-shade {
+		position: absolute;
+		inset: 0;
+		background:
+			linear-gradient(90deg, rgb(3 26 29 / 0.94) 0%, rgb(3 26 29 / 0.78) 34%, rgb(3 26 29 / 0.25) 66%, rgb(3 26 29 / 0.05) 100%),
+			linear-gradient(0deg, rgb(3 26 29 / 0.92) 0%, rgb(3 26 29 / 0) 42%);
+	}
+	.fh-content {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: flex-end;
+		padding-top: 7rem;
+		padding-bottom: 8.5rem;
+	}
+	.fh-text {
+		max-width: 48rem;
+		opacity: 0;
+		transform: translateY(14px);
+		transition:
+			opacity 0.7s ease 0.2s,
+			transform 0.8s var(--ease-out-quint) 0.2s;
+	}
+	.fh-text.is-active {
+		opacity: 1;
+		transform: none;
+	}
+	.fh-title {
+		font-size: clamp(1.9rem, 3.5vw, 3.05rem);
+		font-stretch: 104%;
+		line-height: 1.04;
+		text-wrap: balance;
+	}
+	.fh-title a {
+		color: var(--color-mist);
+		transition: color 0.2s;
+	}
+	.fh-title a:hover {
+		color: #fff;
+	}
+	.fh-summary {
+		max-width: 36rem;
+		font-size: 1.05rem;
+		line-height: 1.6;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	.fh-controls {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 2rem;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+	}
+	.fh-progress {
+		position: relative;
+		flex: 1;
+		max-width: 14rem;
+		height: 2px;
+		background: rgb(233 239 234 / 0.25);
+		overflow: hidden;
+	}
+	.fh-progress span {
+		position: absolute;
+		inset: 0;
+		background: var(--color-gold);
+		transform-origin: left;
+		animation-name: fh-progress;
+		animation-timing-function: linear;
+		animation-fill-mode: forwards;
+	}
+	@keyframes fh-progress {
+		from {
+			transform: scaleX(0);
+		}
+		to {
+			transform: scaleX(1);
+		}
+	}
+	@media (max-width: 640px) {
+		.fh {
+			min-height: 600px;
+		}
+		.fh-content {
+			padding-bottom: 6.5rem;
+		}
+		.fh-shade {
+			background: linear-gradient(0deg, rgb(3 26 29 / 0.96) 0%, rgb(3 26 29 / 0.75) 45%, rgb(3 26 29 / 0.2) 100%);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.fh-photo,
+		.fh-text {
+			transition: none;
+			transform: none;
 		}
 	}
 </style>

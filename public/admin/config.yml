@@ -67,12 +67,6 @@ collections:
           hint: "e.g. Lantapan, Bukidnon",
         }
       - {
-          name: summary,
-          label: Short summary,
-          widget: text,
-          hint: "One sentence shown under the wall and in link previews.",
-        }
-      - {
           name: image,
           label: Main photo,
           widget: image,
@@ -120,13 +114,15 @@ collections:
           name: body,
           label: Story text,
           widget: markdown,
-          hint: "Write or paste the story here (pasting from Word or Google Docs is fine; the text is cleaned on save). A line that is only bold text becomes a subheading. Add photos with the photo fields above, not inside the text.",
+          hint: "The first paragraph is used as the summary on the home page and in link previews. Write or paste the story here (pasting from Word or Google Docs is fine; the text is cleaned on save). A line that is only bold text becomes a subheading. Add photos with the photo fields above, not inside the text.",
         }
       # Set automatically / kept from the original dtirapid.ph articles; not shown to editors
       - { name: articleId, widget: hidden, required: false }
       - { name: source, widget: hidden, required: false }
       - { name: order, widget: hidden, required: false }
       - { name: caption, widget: hidden, required: false }
+      # the summary is now taken from the first paragraph of the story text
+      - { name: summary, widget: hidden, required: false }
       - { name: alt, widget: hidden, required: false }
       - { name: alt2, widget: hidden, required: false }
       # older single extra photo; moved into More photos automatically the next time the story is saved
@@ -154,8 +150,9 @@ collections:
           - name: featuredStyle
             label: Featured wall style
             widget: select
-            default: clean
-            hint: "Clean = large photo with its title card, no frame. Museum = framed photos with the story summary underneath (the earlier look)."
+            default: hero
+            hint: "Hero = full-screen photo with the story title, its first paragraph and a Read the story button. Clean = large photo with its title card. Museum = framed photos with the story summary (the earliest look)."
             options:
+              - { label: "Hero: full-screen featured story", value: hero }
               - { label: "Clean: large photo, no frame", value: clean }
               - { label: "Museum: framed photos with summary", value: museum }

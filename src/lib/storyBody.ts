@@ -87,3 +87,21 @@ export function photoSide(side: string | undefined, index: number): 'left' | 'ri
 	return index % 2 === 0 ? 'left' : 'right';
 }
 
+/** Plain text of the story's first paragraph, used as its summary (hero, link previews). */
+export function firstParagraph(md: string, maxLength = 220): string {
+	const first = renderStoryBlocks(md).find((b) => b.isParagraph);
+	if (!first) return '';
+	const text = first.html
+		.replace(/<[^>]+>/g, '')
+		.replace(/&amp;/g, '&')
+		.replace(/&quot;/g, '"')
+		.replace(/&#39;/g, "'")
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
+		.replace(/\s+/g, ' ')
+		.trim();
+	if (text.length <= maxLength) return text;
+	// cut at a word boundary
+	return text.slice(0, text.lastIndexOf(' ', maxLength)).replace(/[,;:.]$/, '') + '…';
+}
+
