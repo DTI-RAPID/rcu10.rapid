@@ -6,7 +6,27 @@ date: 2026-11-09
 place: Malaybalay City, Bukidnon
 image: images/IMG_2364.JPG
 caption: ''
-photos: []
+photos:
+  - image: images/mc2 - shop 2.jpg
+    caption: Photo credits to MC² Facebook page
+    size: large
+    side: right
+    after: 15
+  - image: images/MC2 - coffee cupping_n.jpg
+    caption: Photo credits to MC² Facebook page
+    size: large
+    side: left
+    after: 7
+  - image: images/mc2 - building.jpg
+    caption: MC² physical store in Pimentel Street in Malaybalay City. Photo credit to MC² Facebook Page
+    size: large
+    side: auto
+    after: 25
+  - image: images/MC2 - staff_n.jpg
+    caption: ''
+    size: large
+    side: auto
+    after: 38
 author: Princess G. Dayondon
 unit: RCU10
 ---
