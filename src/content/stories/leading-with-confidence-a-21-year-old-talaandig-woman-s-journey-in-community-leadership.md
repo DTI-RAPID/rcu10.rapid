@@ -5,8 +5,8 @@ youth: true
 date: 2026-11-09
 place: Lantapan, Bukidnon
 summary: In the coffee-growing community of Kaatuan, Bukidnon, a young indigenous woman discovers how leadership, learning, and service can create opportunities for herself and others.
-image: images/ssf.png
-image2: images/ssf.png
+image: images/IMG_2296.JPG
+image2: images/Genna with AVP.jpg
 author: Princess G. Dayondon
 unit: RCU 10
 ---
