@@ -1,3 +1,14 @@
+# RCU 10 Website (RAPID Growth Project)
+
+## 📄 Documentation
+
+Full system documentation (technology stack, folder management, assets and the story posting flow):
+
+- [Read the PDF](docs/RCU10_Website_Documentation.pdf)
+- [Download the Word version](docs/RCU10_Website_Documentation.docx)
+
+---
+
 # Astro Starter Kit: Basics
 
 ```sh
